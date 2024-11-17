@@ -65,11 +65,79 @@ public class Table4 {
         //        generate product description
         generateProductDescription(table);
 
+        //          generate item row
+        generateItem(table);
+
         // Populate full PDF structure
         document.add(table);
         document.close();
 
         System.out.println("PDF Table Generated Successfully!");
+    }
+
+    private static void generateItem(Table invoiceTable) {
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("ITEM # ").append("980272065").append(System.lineSeparator());
+
+
+//        shippingMarks , assortment , WHSE pack ,VNDR pack, total VNDR packs,
+//        total unit, weight, pack price,amount in USD, VNDR PACK type,
+//        net vndr pack, net total, gross vndr pack, gross total
+
+        createRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, "14", "42",
+                "588", DUMMY_TEXT, "83.9322", "49352.1336", DUMMY_TEXT,
+                "210.0000", "8820.0000", DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+
+        builder.setLength(0);
+        builder.append("ITEM DESCRIPTION: ").append("15PC HARD ANODIZED COOKEWARE SET").append(System.lineSeparator());
+        builder.append(TAB).append("COMPONENT DETAILS: ").append(System.lineSeparator());
+
+
+        createExpandingRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+
+
+//         clear builder to reuse
+        builder.setLength(0);
+
+//        build the Common Name
+        for (int i = 0; i < 5; i++) {
+
+            builder.append(TAB).append("COMMON NAME: ").append("2QT COVERED SAUCE PAN").append(System.lineSeparator());
+            builder.append(TAB).append(TAB).append("BREAKDOWN:").append(System.lineSeparator());
+            builder.append(TAB).append(TAB).append("BREAKDOWN:").append(System.lineSeparator());
+            builder.append(TAB).append(TAB).append("STAINLESS STEEL - ").append("20%").append(System.lineSeparator());
+            builder.append(TAB).append(TAB).append("GLASS - ").append("25%").append(System.lineSeparator());
+            builder.append(TAB).append(TAB).append("ALUMINUM - ").append("55%").append(System.lineSeparator());
+            builder.append(TAB).append("VALUE: ").append("7.8391").append(System.lineSeparator())
+                   .append(System.lineSeparator()).append(System.lineSeparator());
+
+            createRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+                    DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+                    DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+
+        }
+
+        builder.setLength(0);
+
+        builder.append(System.lineSeparator());
+        builder.append("ASSEMBLY MANUFACTURER:").append(System.lineSeparator());
+        builder.append("NAME: ").append("GUANGDONG MASTER GROUP CO., LTD").append(System.lineSeparator());
+        builder.append("ADDRESS: ")
+               .append("NO. 48-50 SOUTH SECTION, DANAN ROAD, XINXING COUNTY, YUNFU, GD, CN, 527300, 8618023382230")
+               .append(System.lineSeparator())
+               .append(System.lineSeparator())
+               .append(System.lineSeparator());
+
+        createRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+
+
+
+
     }
 
     private static void generateAssortmentItems(Table invoiceTable) {

@@ -120,7 +120,7 @@ public class MyOwnPDF {
 
         String invoiceTotal = "INVOICE TOTAL";
 
-        createRowForIncomeTable("", invoiceTotal, "1", "14", "42",
+        createRowForInvoiceTable("", invoiceTotal, "1", "14", "42",
                 "588", "", "83.9322", "49352.13", "",
                 "210.0000", "8820.0000", "", "10010.7000", invoiceTable);
 
@@ -164,7 +164,7 @@ public class MyOwnPDF {
 //        total unit, weight, pack price,amount in USD, VNDR PACK type,
 //        net vndr pack, net total, gross vndr pack, gross total
 
-        createRowForIncomeTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, "14", "42",
+        createRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, "14", "42",
                 "588", DUMMY_TEXT, "83.9322", "49352.1336", DUMMY_TEXT,
                 "210.0000", "8820.0000", DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
 
@@ -173,7 +173,7 @@ public class MyOwnPDF {
         builder.append(TAB).append("COMPONENT DETAILS: ").append(System.lineSeparator());
 
 
-        createRowForIncomeTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+        createExpandingRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
                 DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
                 DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
 
@@ -193,7 +193,7 @@ public class MyOwnPDF {
             builder.append(TAB).append("VALUE: ").append("7.8391").append(System.lineSeparator())
                    .append(System.lineSeparator()).append(System.lineSeparator());
 
-            createRowForIncomeTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+            createRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
                     DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
                     DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
 
@@ -210,7 +210,7 @@ public class MyOwnPDF {
                .append(System.lineSeparator())
                .append(System.lineSeparator());
 
-        createRowForIncomeTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+        createRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
                 DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
                 DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
 
@@ -277,17 +277,17 @@ public class MyOwnPDF {
         assortmentBuilder.append("UPC # ").append("193968069360").append(System.lineSeparator());
         assortmentBuilder.append("COUNTRY ORIGIN: ").append("CHINA").append(System.lineSeparator());
 
-        createRowForIncomeTable(DUMMY_TEXT, assortmentBuilder.toString(), "1", "14", "42",
+        createRowForInvoiceTable(DUMMY_TEXT, assortmentBuilder.toString(), "1", "14", "42",
                 "588", DUMMY_TEXT, "1175.0508", "49352.1336", "PALLET(S)",
                 "210.0000", "8820.0000", "238.3500", "10010.7000", invoiceTable);
 
     }
 
-    private static void createRowForIncomeTable(String shippingMarks, String assortment, String whsepack,
-                                        String vndrPack, String totalVNDRPack, String totalUnit,
-                                        String weight, String packPrice, String amountInUSD,
-                                        String vndrPackType, String netVNDRPack, String netTotal,
-                                        String grossVndrPack, String grossTotal, Table invoiceTable
+    private static void createRowForInvoiceTable(String shippingMarks, String assortment, String whsepack,
+                                                 String vndrPack, String totalVNDRPack, String totalUnit,
+                                                 String weight, String packPrice, String amountInUSD,
+                                                 String vndrPackType, String netVNDRPack, String netTotal,
+                                                 String grossVndrPack, String grossTotal, Table invoiceTable
     ) {
 
         Cell[] row = new Cell[14];
@@ -321,7 +321,7 @@ public class MyOwnPDF {
 //        shippingMarks , assortment , WHSE pack ,VNDR pack, total VNDR packs, total unit, weight, pack price,
 //        amount in USD, VNDR PACK type, net vndr pack, net total, gross vndr pack, gross total
 
-        createRowForIncomeTable(shippingMarks, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+        createRowForInvoiceTable(shippingMarks, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
                 DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
                 DUMMY_TEXT, DUMMY_TEXT , invoiceTable);
     }
