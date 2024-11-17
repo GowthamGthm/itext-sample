@@ -32,7 +32,9 @@ public class MyOwnPDF {
     static String directory = "C:\\Users\\anon\\Pictures\\output-invoide\\";
     private static String PATH = directory + "my-own.pdf";
 
-    private static String DUMMY_TEXT = "-NA-";
+    private static String EMPTY_TEXT = """
+        
+        """;
     private static String TAB = "\t";
 
 
@@ -164,18 +166,16 @@ public class MyOwnPDF {
 //        total unit, weight, pack price,amount in USD, VNDR PACK type,
 //        net vndr pack, net total, gross vndr pack, gross total
 
-        createRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, "14", "42",
-                "588", DUMMY_TEXT, "83.9322", "49352.1336", DUMMY_TEXT,
-                "210.0000", "8820.0000", DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+        createRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, "14", "42",
+                "588", EMPTY_TEXT, "83.9322", "49352.1336", EMPTY_TEXT,
+                "210.0000", "8820.0000", EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
 
         builder.setLength(0);
         builder.append("ITEM DESCRIPTION: ").append("15PC HARD ANODIZED COOKEWARE SET").append(System.lineSeparator());
         builder.append(TAB).append("COMPONENT DETAILS: ").append(System.lineSeparator());
 
 
-        createExpandingRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+        createExpandingRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
 
 
 //         clear builder to reuse
@@ -193,9 +193,7 @@ public class MyOwnPDF {
             builder.append(TAB).append("VALUE: ").append("7.8391").append(System.lineSeparator())
                    .append(System.lineSeparator()).append(System.lineSeparator());
 
-            createRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                    DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                    DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+            createRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
 
         }
 
@@ -210,9 +208,7 @@ public class MyOwnPDF {
                .append(System.lineSeparator())
                .append(System.lineSeparator());
 
-        createRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+        createRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
 
 
 
@@ -230,9 +226,7 @@ public class MyOwnPDF {
 //                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
 //                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
 
-        createExpandingRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+        createExpandingRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
 
     }
 
@@ -277,8 +271,8 @@ public class MyOwnPDF {
         assortmentBuilder.append("UPC # ").append("193968069360").append(System.lineSeparator());
         assortmentBuilder.append("COUNTRY ORIGIN: ").append("CHINA").append(System.lineSeparator());
 
-        createRowForInvoiceTable(DUMMY_TEXT, assortmentBuilder.toString(), "1", "14", "42",
-                "588", DUMMY_TEXT, "1175.0508", "49352.1336", "PALLET(S)",
+        createRowForInvoiceTable(EMPTY_TEXT, assortmentBuilder.toString(), "1", "14", "42",
+                "588", EMPTY_TEXT, "1175.0508", "49352.1336", "PALLET(S)",
                 "210.0000", "8820.0000", "238.3500", "10010.7000", invoiceTable);
 
     }
@@ -321,9 +315,7 @@ public class MyOwnPDF {
 //        shippingMarks , assortment , WHSE pack ,VNDR pack, total VNDR packs, total unit, weight, pack price,
 //        amount in USD, VNDR PACK type, net vndr pack, net total, gross vndr pack, gross total
 
-        createRowForInvoiceTable(shippingMarks, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                DUMMY_TEXT, DUMMY_TEXT , invoiceTable);
+        createRowForInvoiceTable(shippingMarks, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
     }
 
     private static Cell addCellForInvoice(int rowSpan, int colSpan, String content) {

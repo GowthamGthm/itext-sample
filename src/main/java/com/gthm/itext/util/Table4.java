@@ -5,9 +5,8 @@ import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.element.*;
+import com.itextpdf.layout.properties.TabAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 
@@ -16,7 +15,9 @@ import java.util.List;
 
 public class Table4 {
 
-    private static String DUMMY_TEXT = "-NA-";
+    private static String EMPTY_TEXT = """
+        
+        """;
     private static String TAB = "\t";
 
     public static void main(String[] args) throws Exception {
@@ -85,28 +86,25 @@ public class Table4 {
 //        total unit, weight, pack price,amount in USD, VNDR PACK type,
 //        net vndr pack, net total, gross vndr pack, gross total
 
-        createRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, "14", "42",
-                "588", DUMMY_TEXT, "83.9322", "49352.1336", DUMMY_TEXT,
-                "210.0000", "8820.0000", DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+        createRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, "14", "42",
+                "588", EMPTY_TEXT, "83.9322", "49352.1336", EMPTY_TEXT,
+                "210.0000", "8820.0000", EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
 
         builder.setLength(0);
         builder.append("ITEM DESCRIPTION: ").append("15PC HARD ANODIZED COOKEWARE SET").append(System.lineSeparator());
         builder.append(TAB).append("COMPONENT DETAILS: ").append(System.lineSeparator());
 
 
-        createExpandingRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+        createExpandingRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
 
 
 //         clear builder to reuse
         builder.setLength(0);
 
 //        build the Common Name
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 1; i++) {
 
             builder.append(TAB).append("COMMON NAME: ").append("2QT COVERED SAUCE PAN").append(System.lineSeparator());
-            builder.append(TAB).append(TAB).append("BREAKDOWN:").append(System.lineSeparator());
             builder.append(TAB).append(TAB).append("BREAKDOWN:").append(System.lineSeparator());
             builder.append(TAB).append(TAB).append("STAINLESS STEEL - ").append("20%").append(System.lineSeparator());
             builder.append(TAB).append(TAB).append("GLASS - ").append("25%").append(System.lineSeparator());
@@ -114,9 +112,7 @@ public class Table4 {
             builder.append(TAB).append("VALUE: ").append("7.8391").append(System.lineSeparator())
                    .append(System.lineSeparator()).append(System.lineSeparator());
 
-            createRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                    DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                    DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+            createRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
 
         }
 
@@ -131,9 +127,7 @@ public class Table4 {
                .append(System.lineSeparator())
                .append(System.lineSeparator());
 
-        createRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+        createRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
 
 
 
@@ -148,8 +142,8 @@ public class Table4 {
         assortmentBuilder.append("UPC # ").append("193968069360").append(System.lineSeparator());
         assortmentBuilder.append("COUNTRY ORIGIN: ").append("CHINA").append(System.lineSeparator());
 
-        createRowForInvoiceTable(DUMMY_TEXT, assortmentBuilder.toString(), "1", "14", "42",
-                "588", DUMMY_TEXT, "1175.0508", "49352.1336", "PALLET(S)",
+        createRowForInvoiceTable(EMPTY_TEXT, assortmentBuilder.toString(), "1", "14", "42",
+                "588", EMPTY_TEXT, "1175.0508", "49352.1336", "PALLET(S)",
                 "210.0000", "8820.0000", "238.3500", "10010.7000", invoiceTable);
 
     }
@@ -165,9 +159,7 @@ public class Table4 {
 //                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
 //                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
 
-        createExpandingRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+        createExpandingRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
 
 
     }
@@ -211,9 +203,7 @@ public class Table4 {
 //        shippingMarks , assortment , WHSE pack ,VNDR pack, total VNDR packs, total unit, weight, pack price,
 //        amount in USD, VNDR PACK type, net vndr pack, net total, gross vndr pack, gross total
 
-        createRowForInvoiceTable(shippingMarks, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
-                DUMMY_TEXT, DUMMY_TEXT , invoiceTable);
+        createRowForInvoiceTable(shippingMarks, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
     }
 
     private static void createRowForInvoiceTable(String shippingMarks, String assortment, String whsepack,
@@ -250,7 +240,23 @@ public class Table4 {
     }
 
     private static Cell addCellForInvoice(int rowSpan, int colSpan, String content) {
-        Paragraph paragraph = new Paragraph(content).setFontSize(8).setPaddingLeft(5);
+//        Paragraph paragraph = new Paragraph(content).setFontSize(8).setPaddingLeft(5);
+
+        // Create a Paragraph with tab stops
+        Paragraph paragraph = new Paragraph()
+                .setFontSize(8)
+                .setPaddingLeft(5)
+                .addTabStops(new TabStop(4, TabAlignment.LEFT));
+
+        // Split content into parts where you want tabs
+        String[] parts = content.split("\t"); // Use \t to define tabs in your input text
+        for (int i = 0; i < parts.length; i++) {
+            paragraph.add(parts[i]); // Add each part
+            if (i < parts.length - 1) {
+                paragraph.add(new Tab()); // Add a tab between parts
+            }
+        }
+
         Cell cell = new Cell(rowSpan, colSpan).add(paragraph);
 //        cell.setBorder(Border.NO_BORDER);
         cell.setTextAlignment(TextAlignment.LEFT);
