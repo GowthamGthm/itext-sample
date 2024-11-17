@@ -76,9 +76,12 @@ public class MyOwnPDF {
         List<InvoiceContents> invoiceContentsList = InvoiceContents.getDummyData();
         List<Cell[]> rowsForShippingMarks = new ArrayList<>();
 
+        String shippingMarks = invoiceContentsList.get(0)
+                                                  .getShippingMarks();
+
 //         generate shippingMarks
         Cell[] row = new Cell[14];
-        row[0] = addCellForInvoice(2,2 , "ABCD"); // shipping marks
+        row[0] = addCellForInvoice(2,2 , shippingMarks); // shipping marks
         row[1] = addCellForInvoice(2,3 , "ABCD"); // assortment
         row[2] = addCellForInvoice(2,1 , "ABCD"); // WHSE pack
         row[3] = addCellForInvoice(2,1 , "ABCD"); // VNDR pack
@@ -114,7 +117,11 @@ public class MyOwnPDF {
     }
 
     private static Cell addCellForInvoice(int rowSpan, int colSpan, String content) {
-        return new Cell(rowSpan, colSpan).add(new Paragraph(content).setFontSize(9));
+        Paragraph paragraph = new Paragraph(content).setFontSize(9);
+        Cell cell = new Cell(rowSpan, colSpan).add(paragraph);
+//        cell.setBorder(Border.NO_BORDER);
+        cell.setTextAlignment(TextAlignment.LEFT);
+        return cell;
     }
 
     private static void generateAddress(Document document) {
