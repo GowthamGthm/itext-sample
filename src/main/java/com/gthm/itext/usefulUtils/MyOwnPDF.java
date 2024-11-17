@@ -56,8 +56,23 @@ public class MyOwnPDF {
             generatePackingList(pdfDoc, document);
             generateOtherInformation(document);
             Table invoiceTable = generateInvoiceTableHeader(document);
-//            document.add(invoiceTable);
             generateTheDataInInvoiceTable(document, invoiceTable);
+
+
+//            generate total in words
+            Paragraph totalAmountInWords =
+                    new Paragraph("INVOICE TOTAL VALUE IN US DOLLARS FORTY-NINE THOUSAND THREE HUNDRED " +
+                            "AND FIFTY TWO AND CENTS THIRTEEN");
+            totalAmountInWords.setMarginTop(15);
+            totalAmountInWords.setFontSize(9);
+            totalAmountInWords.setMarginLeft(30);
+            totalAmountInWords.setTextAlignment(TextAlignment.LEFT);
+            totalAmountInWords.setMarginBottom(20);
+            document.add(totalAmountInWords);
+
+//            generateUnder line and extra Stuff
+            generateUnderLineAndExtraStuff(document);
+
 
 
             // close the document
@@ -70,6 +85,47 @@ public class MyOwnPDF {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+    }
+
+    private static void generateUnderLineAndExtraStuff(Document document) {
+        addUnderLine(document);
+
+        Paragraph descriptionPara = new Paragraph("DESCRIPTION, ORIGIN, QUANTITY, COST OF ANY FREE SUPPLIED PART(S):")
+                .setFontSize(8)
+                 .setTextAlignment(TextAlignment.LEFT)
+                .setMarginLeft(30);
+
+        document.add(descriptionPara);
+
+        addUnderLine(document);
+
+
+//         signature
+        Paragraph namePara = new Paragraph("JANE").setFontSize(8)
+                                                   .setTextAlignment(TextAlignment.LEFT).setMarginTop(20)
+                .setMarginLeft(30);
+
+        document.add(namePara);
+
+        Paragraph shippingSpecialist = new Paragraph("SHIPPING SPECIALIST").setFontSize(8)
+                                                  .setTextAlignment(TextAlignment.LEFT)
+                .setMarginLeft(30);
+
+        document.add(shippingSpecialist);
+
+
+    }
+
+    private static void generateInvoiceTotalRow(Table invoiceTable) {
+
+        String invoiceTotal = "INVOICE TOTAL";
+
+        createRowForIncomeTable("", invoiceTotal, "1", "14", "42",
+                "588", "", "83.9322", "49352.13", "",
+                "210.0000", "8820.0000", "", "10010.7000", invoiceTable);
+
 
 
     }
@@ -92,8 +148,10 @@ public class MyOwnPDF {
 //          generate item row
         generateItem(invoiceTable);
 
+        //   generate invoice Total Row
+        generateInvoiceTotalRow(invoiceTable);
 
-//        Table invoiceTable1 = TableUtil.removeBorder(invoiceTable);
+//         add invoice table to the document at last of adding all RoWS
         document.add(invoiceTable);
 
     }
@@ -136,7 +194,8 @@ public class MyOwnPDF {
             builder.append(TAB).append(TAB).append("STAINLESS STEEL - ").append("20%").append(System.lineSeparator());
             builder.append(TAB).append(TAB).append("GLASS - ").append("25%").append(System.lineSeparator());
             builder.append(TAB).append(TAB).append("ALUMINUM - ").append("55%").append(System.lineSeparator());
-            builder.append(TAB).append("VALUE: ").append("7.8391").append(System.lineSeparator());
+            builder.append(TAB).append("VALUE: ").append("7.8391").append(System.lineSeparator())
+                   .append(System.lineSeparator()).append(System.lineSeparator());
 
             createRowForIncomeTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
                     DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
@@ -266,6 +325,11 @@ public class MyOwnPDF {
                                              .add("(852)2312 0484");
 
         document.add(telephone);
+        addUnderLine(document);
+
+    }
+
+    private static void addUnderLine(Document document) {
         LineSeparator lineSeparator = new LineSeparator(new SolidLine());
         lineSeparator.setMarginTop(1);
         lineSeparator.setMarginLeft(20);
@@ -273,7 +337,6 @@ public class MyOwnPDF {
         lineSeparator.setStrokeColor(ColorConstants.BLACK);
         lineSeparator.setStrokeWidth(0);
         document.add(lineSeparator);
-
     }
 
     private static void generateOtherInformation(Document document) {
@@ -301,6 +364,7 @@ public class MyOwnPDF {
         invoiceTableHeader.setWidth(UnitValue.createPercentValue(100));
         invoiceTableHeader.setMarginLeft(20);
         invoiceTableHeader.setMarginRight(20);
+        invoiceTableHeader.setKeepTogether(true);
 
         invoiceTableHeader.addCell(new Cell(2, 2).add(TableUtil.getTableHeader("SHIPPING MARKS, PO#,\n PO Type & Dept#")))
                           .setVerticalAlignment(VerticalAlignment.MIDDLE)
