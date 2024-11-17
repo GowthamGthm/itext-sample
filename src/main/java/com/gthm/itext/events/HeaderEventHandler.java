@@ -15,8 +15,6 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 
-import java.io.Serializable;
-
 public class HeaderEventHandler implements IEventHandler {
 
     private final String soldTo;
@@ -39,7 +37,8 @@ public class HeaderEventHandler implements IEventHandler {
     public void handleEvent(Event event) {
         PdfDocumentEvent docEvent = (PdfDocumentEvent) event;
         PdfPage page = docEvent.getPage();
-        int pageNumber = docEvent.getDocument().getPageNumber(page);
+        int pageNumber = docEvent.getDocument()
+                                 .getPageNumber(page);
 
         if (page != null) {
             updatePageHeaders(page, pageNumber, totalPageCount);
@@ -49,41 +48,47 @@ public class HeaderEventHandler implements IEventHandler {
 
     public void updatePageHeaders(PdfPage page, int pageNumber, int totalPageCount) {
         if (page == null || pageNumber <= 1) {
-            System.out.println("Pgae null or first page, hence skipped headers");
+            System.out.println("Page null or first page, hence skipped headers");
             return;
         }
 
         PdfCanvas pdfCanvas = new PdfCanvas(page);
         Rectangle pageSize = page.getPageSize();
 
-        Table headerTable = new Table(UnitValue.createPercentArray(new float[]{2, 2, 2, 2}))
-                .useAllAvailableWidth();
+        float leftMargin = 20;
+        float rightMargin = 20;
 
-        String pageCount = totalPageCount > 0 ? totalPageCount+ "" : "##";
+        Table headerTable =
+                new Table(UnitValue.createPercentArray(new float[]{1, 1, 1, 1})).useAllAvailableWidth();
+
+        String pageCount = totalPageCount > 0 ? totalPageCount + "" : "##";
 
         headerTable.addCell(createHeaderCell("SOLD TO: " + soldTo, true));
         headerTable.addCell(createHeaderCell("INVOICE #: " + invoiceNumber, true));
-        headerTable.addCell(createHeaderCell("DATE: " + date , true));
-        headerTable.addCell(createHeaderCell("PAGE " + pageNumber + " of " + pageCount , false));
+        headerTable.addCell(createHeaderCell("DATE: " + date, true));
+        headerTable.addCell(createHeaderCell("PAGE " + pageNumber + " of " + pageCount, false));
 
         float headerY = pageSize.getTop() - 30;
-        float width = pageSize.getWidth();
+        float width = pageSize.getWidth() - leftMargin - rightMargin;
         float height = 30;
 
-        Canvas canvas = new Canvas(pdfCanvas, new Rectangle(0, headerY, width, height));
+        // Adjust Rectangle for margins
+        Canvas canvas = new Canvas(pdfCanvas, new Rectangle(leftMargin, headerY, width, height));
         canvas.add(headerTable);
         canvas.close();
     }
 
-    private Cell createHeaderCell(String content , boolean bold) {
+    private Cell createHeaderCell(String content, boolean bold) {
+        Paragraph paragraph = new Paragraph(content).setFontSize(10)
+                                                    .setTextAlignment(TextAlignment.CENTER);
 
-        Cell cell = new Cell().add(new Paragraph(content).setFontSize(10))
-                              .setBorder(Border.NO_BORDER)
-                              .setTextAlignment(TextAlignment.LEFT)
-                              .setBackgroundColor(ColorConstants.WHITE);
+        if (bold) {
+            paragraph.setBold();
+        }
 
-        cell.setProperty(8, bold);
-        return cell;
+        return new Cell().add(paragraph)
+                         .setBorder(Border.NO_BORDER)
+                         .setBackgroundColor(ColorConstants.WHITE);
     }
 
 }
