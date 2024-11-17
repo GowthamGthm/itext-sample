@@ -34,6 +34,8 @@ public class MyOwnPDF {
     static String directory = "C:\\Users\\anon\\Pictures\\output-invoide\\";
     private static String PATH = directory + "my-own.pdf";
 
+    private static String DUMMY_TEXT = "-NA-";
+
 
     public static void main(String[] args) {
 
@@ -74,31 +76,50 @@ public class MyOwnPDF {
     private static void generateTheDataInInvoiceTable(Document document, Table invoiceTable) {
 
         List<InvoiceContents> invoiceContentsList = InvoiceContents.getDummyData();
-        List<Cell[]> rowsForShippingMarks = new ArrayList<>();
 
+        //         generate shippingMarks
         String shippingMarks = invoiceContentsList.get(0)
                                                   .getShippingMarks();
+        generateShippingMarksRow(shippingMarks , invoiceTable);
 
-//         generate shippingMarks
+//         generate values for ASSORTMENT ITEMS
+        generateAssortmentItems(invoiceTable);
+
+
+
+//        Table invoiceTable1 = TableUtil.removeBorder(invoiceTable);
+        document.add(invoiceTable);
+
+    }
+
+    private static void generateAssortmentItems(Table invoiceTable) {
+        List<Cell[]> rowsForShippingMarks = new ArrayList<>();
+
+        StringBuilder assortmentBuilder = new StringBuilder();
+        assortmentBuilder.append("ITEM # ").append("980272065").append(System.lineSeparator());
+        assortmentBuilder.append("UPC # ").append("193968069360").append(System.lineSeparator());
+        assortmentBuilder.append("COUNTRY ORIGIN: ").append("CHINA").append(System.lineSeparator());
+        assortmentBuilder.append("PRODUCT DESCRIPTION: ").append("15PC HARD ANODIZED COOKEWARE SET").append(System.lineSeparator());
+        assortmentBuilder.append("ADDITIONAL PRODUCT DESCRIPTION: ").append("").append(System.lineSeparator());
+
         Cell[] row = new Cell[14];
-        row[0] = addCellForInvoice(2,2 , shippingMarks); // shipping marks
-        row[1] = addCellForInvoice(2,3 , "ABCD"); // assortment
-        row[2] = addCellForInvoice(2,1 , "ABCD"); // WHSE pack
-        row[3] = addCellForInvoice(2,1 , "ABCD"); // VNDR pack
+        row[0] = addCellForInvoice(2,2 , ""); // shipping marks
+        row[1] = addCellForInvoice(2,3 , assortmentBuilder.toString()); // assortment
+        row[2] = addCellForInvoice(2,1 , "1"); // WHSE pack
+        row[3] = addCellForInvoice(2,1 , "14"); // VNDR pack
 
-        row[4] = addCellForInvoice(1,1 , "ABCD"); // total VNDR packs
-        row[5] = addCellForInvoice(2,1 , "ABCD"); // total unit
+        row[4] = addCellForInvoice(1,1 , "42"); // total VNDR packs
+        row[5] = addCellForInvoice(2,1 , "588"); // total unit
 
-        row[6] = addCellForInvoice(1,4 , "ABCD"); // weight
-        row[7] = addCellForInvoice(2,1 , "ABCD"); // pack price
-        row[8] = addCellForInvoice(2,2 , "ABCD"); // amount in USD
+        row[6] = addCellForInvoice(1,4 , DUMMY_TEXT); // weight
+        row[7] = addCellForInvoice(2,1 , "1175.0508"); // pack price
+        row[8] = addCellForInvoice(2,2 , "49352.1336"); // amount in USD
 
-        row[9] = addCellForInvoice(1,1 , "ABCD");  // VNDR PACK type
-        row[10] = addCellForInvoice(1,1, "ABCD"); // net vndr pack
-        row[11] = addCellForInvoice(1,1 , "ABCD"); // net total
-        row[12] = addCellForInvoice(1,1 , "ABCD"); // gross vndr pack
-        row[13] = addCellForInvoice(1,1 , "ABCD"); // gross total
-
+        row[9] = addCellForInvoice(1,1 , "PALLET(S)");  // VNDR PACK type
+        row[10] = addCellForInvoice(1,1, "210.0000"); // net vndr pack
+        row[11] = addCellForInvoice(1,1 , "8820.0000"); // net total
+        row[12] = addCellForInvoice(1,1 , "238.3500 "); // gross vndr pack
+        row[13] = addCellForInvoice(1,1 , "10010.7000"); // gross total
 
         rowsForShippingMarks.add(row);
 
@@ -111,9 +132,45 @@ public class MyOwnPDF {
                 }
             }
         }
-//        Table invoiceTable1 = TableUtil.removeBorder(invoiceTable);
-        document.add(invoiceTable);
 
+    }
+
+    private static void generateShippingMarksRow(String shippingMarks, Table invoiceTable) {
+        List<Cell[]> rowsForShippingMarks = new ArrayList<>();
+
+//        shippingMarks , assortment , WHSE pack ,VNDR pack, total VNDR packs, total unit, weight, pack price,
+//        amount in USD, VNDR PACK type, net vndr pack, net total, gross vndr pack, gross total
+
+        Cell[] row = new Cell[14];
+        row[0] = addCellForInvoice(2,2 , shippingMarks); // shipping marks
+        row[1] = addCellForInvoice(2,3 , DUMMY_TEXT); // assortment
+        row[2] = addCellForInvoice(2,1 , DUMMY_TEXT); // WHSE pack
+        row[3] = addCellForInvoice(2,1 , DUMMY_TEXT); // VNDR pack
+
+        row[4] = addCellForInvoice(1,1 , DUMMY_TEXT); // total VNDR packs
+        row[5] = addCellForInvoice(2,1 , DUMMY_TEXT); // total unit
+
+        row[6] = addCellForInvoice(1,4 , DUMMY_TEXT); // weight
+        row[7] = addCellForInvoice(2,1 , DUMMY_TEXT); // pack price
+        row[8] = addCellForInvoice(2,2 , DUMMY_TEXT); // amount in USD
+
+        row[9] = addCellForInvoice(1,1 , DUMMY_TEXT);  // VNDR PACK type
+        row[10] = addCellForInvoice(1,1, DUMMY_TEXT); // net vndr pack
+        row[11] = addCellForInvoice(1,1 , DUMMY_TEXT); // net total
+        row[12] = addCellForInvoice(1,1 , DUMMY_TEXT); // gross vndr pack
+        row[13] = addCellForInvoice(1,1 , DUMMY_TEXT); // gross total
+
+        rowsForShippingMarks.add(row);
+
+
+        // add shipping mark rows to table
+        for(Cell[] oneRow : rowsForShippingMarks) {
+            for(Cell cell: oneRow) {
+                if(cell != null) {
+                    invoiceTable.addCell(cell);
+                }
+            }
+        }
     }
 
     private static Cell addCellForInvoice(int rowSpan, int colSpan, String content) {
