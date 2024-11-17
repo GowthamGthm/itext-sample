@@ -64,7 +64,7 @@ public class Table4 {
         generateAssortmentItems(table);
 
         //        generate product description
-        generateProductDescription(table);
+//        generateProductDescription(table);
 
         //          generate item row
         generateItem(table);
@@ -80,17 +80,17 @@ public class Table4 {
 
     private static void generateItem(Table invoiceTable) {
 
-        StringBuilder builder = new StringBuilder();
-        builder.append("ITEM # ").append("980272065").append(System.lineSeparator());
+//        StringBuilder builder = new StringBuilder();
+//        builder.append("ITEM # ").append("980272065").append(System.lineSeparator());
 
 
 //        shippingMarks , assortment , WHSE pack ,VNDR pack, total VNDR packs,
 //        total unit, weight, pack price,amount in USD, VNDR PACK type,
 //        net vndr pack, net total, gross vndr pack, gross total
 
-        createRowForItemInInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, "14", "42",
-                "588", EMPTY_TEXT, "83.9322", "49352.1336", EMPTY_TEXT,
-                "210.0000", "8820.0000", EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
+//        createRowForItemInInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, "14", "42",
+//                "588", EMPTY_TEXT, "83.9322", "49352.1336", EMPTY_TEXT,
+//                "210.0000", "8820.0000", EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
 
 //        builder.setLength(0);
 //        builder.append("ITEM DESCRIPTION: ").append("15PC HARD ANODIZED COOKEWARE SET").append(System.lineSeparator());
@@ -224,7 +224,8 @@ public class Table4 {
         assortmentBuilder.append("UPC # ").append("193968069360").append(System.lineSeparator());
         assortmentBuilder.append("COUNTRY ORIGIN: ").append("CHINA").append(System.lineSeparator());
 
-        createRowForInvoiceTable(EMPTY_TEXT, assortmentBuilder.toString(), "1", "14", "42",
+//         TODO: continue the changes here
+        createRowForAssortmentInvoiceTable(EMPTY_TEXT, assortmentBuilder.toString(), "1", "14", "42",
                 "588", EMPTY_TEXT, "1175.0508", "49352.1336", "PALLET(S)",
                 "210.0000", "8820.0000", "238.3500", "10010.7000", invoiceTable);
 
@@ -286,6 +287,35 @@ public class Table4 {
 //        amount in USD, VNDR PACK type, net vndr pack, net total, gross vndr pack, gross total
 
         createRowForInvoiceTable(shippingMarks, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
+    }
+
+    private static void createRowForAssortmentInvoiceTable(String shippingMarks, String assortment, String whsepack,
+                                                 String vndrPack, String totalVNDRPack, String totalUnit,
+                                                 String weight, String packPrice, String amountInUSD,
+                                                 String vndrPackType, String netVNDRPack, String netTotal,
+                                                 String grossVndrPack, String grossTotal, Table invoiceTable
+    ) {
+
+        Cell[] row = new Cell[14];
+        row[0] = addCellForInvoice(2,3 , shippingMarks); // shipping marks
+        row[1] = addCellForInvoice(2,6 , assortment); // assortment
+        row[2] = addCellForInvoice(2,1 , whsepack); // WHSE pack
+        row[3] = addCellForInvoice(2,1 , vndrPack); // VNDR pack
+        row[4] = addCellForInvoice(1,1 , totalVNDRPack); // total VNDR packs
+        row[5] = addCellForInvoice(2,1 , totalUnit);  // total unit
+        row[6] = addCellForInvoice(2,1 , netVNDRPack); // net vndr pack
+        row[7] = addCellForInvoice(2,1 , netTotal); // net total
+        row[8] = addCellForInvoice(2,1 , grossVndrPack); // gross vndr pack
+        row[9] = addCellForInvoice(2,1, grossTotal); // gross total
+        row[10] = addCellForInvoice(2,1 , packPrice); // pack price
+        row[11] = addCellForInvoice(2,1 , amountInUSD);  // amount in USD
+        row[12] = addCellForInvoice(1,1 , vndrPackType); // VNDR PACK type
+
+        for(Cell cell: row) {
+            if(cell != null) {
+                invoiceTable.addCell(cell);
+            }
+        }
     }
 
     private static void createRowForInvoiceTable(String shippingMarks, String assortment, String whsepack,

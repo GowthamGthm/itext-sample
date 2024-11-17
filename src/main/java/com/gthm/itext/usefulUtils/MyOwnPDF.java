@@ -265,6 +265,35 @@ public class MyOwnPDF {
         }
     }
 
+    private static void createRowForAssortmentInvoiceTable(String shippingMarks, String assortment, String whsepack,
+                                                           String vndrPack, String totalVNDRPack, String totalUnit,
+                                                           String weight, String packPrice, String amountInUSD,
+                                                           String vndrPackType, String netVNDRPack, String netTotal,
+                                                           String grossVndrPack, String grossTotal, Table invoiceTable
+    ) {
+
+        Cell[] row = new Cell[14];
+        row[0] = addCellForInvoice(2,3 , shippingMarks); // shipping marks
+        row[1] = addCellForInvoice(2,6 , assortment); // assortment
+        row[2] = addCellForInvoice(2,1 , whsepack); // WHSE pack
+        row[3] = addCellForInvoice(2,1 , vndrPack); // VNDR pack
+        row[4] = addCellForInvoice(1,1 , totalVNDRPack); // total VNDR packs
+        row[5] = addCellForInvoice(2,1 , totalUnit);  // total unit
+        row[6] = addCellForInvoice(2,1 , netVNDRPack); // net vndr pack
+        row[7] = addCellForInvoice(2,1 , netTotal); // net total
+        row[8] = addCellForInvoice(2,1 , grossVndrPack); // gross vndr pack
+        row[9] = addCellForInvoice(2,1, grossTotal); // gross total
+        row[10] = addCellForInvoice(2,1 , packPrice); // pack price
+        row[11] = addCellForInvoice(2,1 , amountInUSD);  // amount in USD
+        row[12] = addCellForInvoice(1,1 , vndrPackType); // VNDR PACK type
+
+        for(Cell cell: row) {
+            if(cell != null) {
+                invoiceTable.addCell(cell);
+            }
+        }
+    }
+
     private static void generateAssortmentItems(Table invoiceTable) {
         List<Cell[]> rowsForShippingMarks = new ArrayList<>();
 
@@ -273,7 +302,7 @@ public class MyOwnPDF {
         assortmentBuilder.append("UPC # ").append("193968069360").append(System.lineSeparator());
         assortmentBuilder.append("COUNTRY ORIGIN: ").append("CHINA").append(System.lineSeparator());
 
-        createRowForInvoiceTable(EMPTY_BLOCK_TXT, assortmentBuilder.toString(), "1", "14", "42",
+        createRowForAssortmentInvoiceTable(EMPTY_BLOCK_TXT, assortmentBuilder.toString(), "1", "14", "42",
                 "588", EMPTY_BLOCK_TXT, "1175.0508", "49352.1336", "PALLET(S)",
                 "210.0000", "8820.0000", "238.3500", "10010.7000", invoiceTable);
 
