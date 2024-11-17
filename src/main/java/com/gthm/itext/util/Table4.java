@@ -69,6 +69,8 @@ public class Table4 {
         //          generate item row
         generateItem(table);
 
+//        generateInvoiceTotalRow(table);
+
         // Populate full PDF structure
         document.add(table);
         document.close();
@@ -86,52 +88,132 @@ public class Table4 {
 //        total unit, weight, pack price,amount in USD, VNDR PACK type,
 //        net vndr pack, net total, gross vndr pack, gross total
 
-        createRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, "14", "42",
+        createRowForItemInInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, "14", "42",
                 "588", EMPTY_TEXT, "83.9322", "49352.1336", EMPTY_TEXT,
                 "210.0000", "8820.0000", EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
 
-        builder.setLength(0);
-        builder.append("ITEM DESCRIPTION: ").append("15PC HARD ANODIZED COOKEWARE SET").append(System.lineSeparator());
-        builder.append(TAB).append("COMPONENT DETAILS: ").append(System.lineSeparator());
+//        builder.setLength(0);
+//        builder.append("ITEM DESCRIPTION: ").append("15PC HARD ANODIZED COOKEWARE SET").append(System.lineSeparator());
+//        builder.append(TAB).append("COMPONENT DETAILS: ").append(System.lineSeparator());
+//
+//
+//        createExpandingRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
+//
+//
+////         clear builder to reuse
+//        builder.setLength(0);
+//
+////        build the Common Name
+//        for (int i = 0; i < 1; i++) {
+//
+//            builder.append(TAB).append("COMMON NAME: ").append("2QT COVERED SAUCE PAN").append(System.lineSeparator());
+//            builder.append(TAB).append(TAB).append("BREAKDOWN:").append(System.lineSeparator());
+//            builder.append(TAB).append(TAB).append("STAINLESS STEEL - ").append("20%").append(System.lineSeparator());
+//            builder.append(TAB).append(TAB).append("GLASS - ").append("25%").append(System.lineSeparator());
+//            builder.append(TAB).append(TAB).append("ALUMINUM - ").append("55%").append(System.lineSeparator());
+//            builder.append(TAB).append("VALUE: ").append("7.8391").append(System.lineSeparator())
+//                   .append(System.lineSeparator()).append(System.lineSeparator());
+//
+//            createExpandingRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
+//
+//        }
+//
+//        builder.setLength(0);
+//
+//        builder.setLength(0);
+////        builder.append(System.lineSeparator());
+//        builder.append("ASSEMBLY MANUFACTURER:").append(System.lineSeparator());
+//        builder.append("NAME: ").append("GUANGDONG MASTER GROUP CO., LTD").append(System.lineSeparator());
+//        builder.append("ADDRESS: ")
+//               .append("NO. 48-50 SOUTH SECTION, DANAN ROAD, XINXING COUNTY, YUNFU, GD, CN, 527300, 8618023382230")
+//               .append(System.lineSeparator())
+//               .append(System.lineSeparator())
+//               .append(System.lineSeparator());
+//
+//        createExpandingRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT,
+//                EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT,
+//                EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
 
 
-        createExpandingRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
+    }
 
+    private static void createRowForItemInInvoiceTable(String shippingMarks, String assortment, String whsepack,
+                                                 String vndrPack, String totalVNDRPack, String totalUnit,
+                                                 String weight, String packPrice, String amountInUSD,
+                                                 String vndrPackType, String netVNDRPack, String netTotal,
+                                                 String grossVndrPack, String grossTotal, Table invoiceTable
+    ) {
 
-//         clear builder to reuse
-        builder.setLength(0);
+        Cell[] row = new Cell[14];
+        row[0] = addCellForInvoice(2,3 , shippingMarks); // shipping marks
+        row[1] = addCellForInvoice(2,7 , assortment); // assortment
+        row[2] = addCellForInvoice(2,1 , vndrPack); // VNDR pack
+        row[3] = addCellForInvoice(2,1 , totalVNDRPack); // total VNDR packs
+        row[4] = addCellForInvoice(2,1 , totalUnit); // total unit
+        row[5] = addCellForInvoice(2,1, netVNDRPack); // net vndr pack
+        row[6] = addCellForInvoice(2,1 , netTotal); // net total
+        row[7] = addCellForInvoice(2,1 , ""); // empty field
+        row[8] = addCellForInvoice(2,1 , ""); // empty field
+        row[9] = addCellForInvoice(2,1 , packPrice); // pack price
+        row[10] = addCellForInvoice(2,1 , amountInUSD); // amount in USD
 
-//        build the Common Name
-        for (int i = 0; i < 1; i++) {
-
-            builder.append(TAB).append("COMMON NAME: ").append("2QT COVERED SAUCE PAN").append(System.lineSeparator());
-            builder.append(TAB).append(TAB).append("BREAKDOWN:").append(System.lineSeparator());
-            builder.append(TAB).append(TAB).append("STAINLESS STEEL - ").append("20%").append(System.lineSeparator());
-            builder.append(TAB).append(TAB).append("GLASS - ").append("25%").append(System.lineSeparator());
-            builder.append(TAB).append(TAB).append("ALUMINUM - ").append("55%").append(System.lineSeparator());
-            builder.append(TAB).append("VALUE: ").append("7.8391").append(System.lineSeparator())
-                   .append(System.lineSeparator()).append(System.lineSeparator());
-
-            createExpandingRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
-
+        for(Cell cell: row) {
+            if(cell != null) {
+                invoiceTable.addCell(cell);
+            }
         }
+    }
 
-        builder.setLength(0);
+    private static void generateInvoiceTotalRow(Table invoiceTable) {
 
-        builder.append(System.lineSeparator());
-        builder.append("ASSEMBLY MANUFACTURER:").append(System.lineSeparator());
-        builder.append("NAME: ").append("GUANGDONG MASTER GROUP CO., LTD").append(System.lineSeparator());
-        builder.append("ADDRESS: ")
-               .append("NO. 48-50 SOUTH SECTION, DANAN ROAD, XINXING COUNTY, YUNFU, GD, CN, 527300, 8618023382230")
-               .append(System.lineSeparator())
-               .append(System.lineSeparator())
-               .append(System.lineSeparator());
+        String invoiceTotal = "INVOICE TOTAL ";
 
-        createRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
+        createRowForInvoiceTotal("", invoiceTotal, "1", "14", "42",
+                "588", "", "83.9322", "49352.13", "",
+                "210.0000", "8820.0000", "", "10010.7000", invoiceTable);
 
 
 
 
+    }
+
+    private static void createRowForInvoiceTotal(String shippingMarks, String assortment, String whsepack,
+                                                 String vndrPack, String totalVNDRPack, String totalUnit,
+                                                 String weight, String packPrice, String amountInUSD,
+                                                 String vndrPackType, String netVNDRPack, String netTotal,
+                                                 String grossVndrPack, String grossTotal, Table invoiceTable
+    ) {
+
+        Cell[] row = new Cell[14];
+        row[0] = addCellForInvoice(2,3 , shippingMarks); // shipping marks
+        row[1] = addCellForInvoiceTotal(2,6 , assortment); // assortment
+        row[2] = addCellForInvoice(2,1 , whsepack); // WHSE pack
+        row[3] = addCellForInvoice(2,1 , vndrPack); // VNDR pack
+        row[4] = addCellForInvoice(2,1 , totalVNDRPack); // total VNDR packs
+        row[5] = addCellForInvoice(2,1 , totalUnit); // total unit
+        row[10] = addCellForInvoice(2,1, "1");
+        row[7] = addCellForInvoice(2,1 , netVNDRPack); // net vndr pack
+        row[11] = addCellForInvoice(2,1 , grossTotal); // gross total
+        row[12] = addCellForInvoice(2,1 , packPrice); // pack price
+        row[13] = addCellForInvoice(2,1 , amountInUSD); // amount in USD
+        row[8] = addCellForInvoice(2,1 , netTotal); // net total
+
+        for(Cell cell: row) {
+            if(cell != null) {
+                invoiceTable.addCell(cell);
+            }
+        }
+    }
+
+    private static Cell addCellForInvoiceTotal(int rowSpan, int colSpan, String content) {
+        Paragraph paragraph = new Paragraph(content)
+                .setFontSize(8)
+                .setPaddingLeft(5);
+
+        Cell cell = new Cell(rowSpan, colSpan).add(paragraph);
+//        cell.setBorder(Border.NO_BORDER);
+        cell.setTextAlignment(TextAlignment.RIGHT);
+        return cell;
     }
 
     private static void generateAssortmentItems(Table invoiceTable) {
@@ -240,22 +322,21 @@ public class Table4 {
     }
 
     private static Cell addCellForInvoice(int rowSpan, int colSpan, String content) {
-//        Paragraph paragraph = new Paragraph(content).setFontSize(8).setPaddingLeft(5);
 
         // Create a Paragraph with tab stops
-        Paragraph paragraph = new Paragraph()
+        Paragraph paragraph = new Paragraph(content)
                 .setFontSize(8)
-                .setPaddingLeft(5)
-                .addTabStops(new TabStop(4, TabAlignment.LEFT));
+                .setPaddingLeft(5);
+//                .addTabStops(new TabStop(4, TabAlignment.LEFT));
 
         // Split content into parts where you want tabs
-        String[] parts = content.split("\t"); // Use \t to define tabs in your input text
-        for (int i = 0; i < parts.length; i++) {
-            paragraph.add(parts[i]); // Add each part
-            if (i < parts.length - 1) {
-                paragraph.add(new Tab()); // Add a tab between parts
-            }
-        }
+//        String[] parts = content.split("\t"); // Use \t to define tabs in your input text
+//        for (int i = 0; i < parts.length; i++) {
+//            paragraph.add(parts[i]); // Add each part
+//            if (i < parts.length - 1) {
+//                paragraph.add(new Tab()); // Add a tab between parts
+//            }
+//        }
 
         Cell cell = new Cell(rowSpan, colSpan).add(paragraph);
 //        cell.setBorder(Border.NO_BORDER);

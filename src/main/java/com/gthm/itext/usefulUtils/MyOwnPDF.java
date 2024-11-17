@@ -166,7 +166,7 @@ public class MyOwnPDF {
 //        total unit, weight, pack price,amount in USD, VNDR PACK type,
 //        net vndr pack, net total, gross vndr pack, gross total
 
-        createRowForInvoiceTable(EMPTY_BLOCK_TXT, builder.toString(), EMPTY_BLOCK_TXT, "14", "42",
+        createRowForItemInInvoiceTable(EMPTY_BLOCK_TXT, builder.toString(), EMPTY_BLOCK_TXT, "14", "42",
                 "588", EMPTY_BLOCK_TXT, "83.9322", "49352.1336", EMPTY_BLOCK_TXT,
                 "210.0000", "8820.0000", EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, invoiceTable);
 
@@ -312,6 +312,33 @@ public class MyOwnPDF {
             }
     }
 
+    private static void createRowForItemInInvoiceTable(String shippingMarks, String assortment, String whsepack,
+                                                       String vndrPack, String totalVNDRPack, String totalUnit,
+                                                       String weight, String packPrice, String amountInUSD,
+                                                       String vndrPackType, String netVNDRPack, String netTotal,
+                                                       String grossVndrPack, String grossTotal, Table invoiceTable
+    ) {
+
+        Cell[] row = new Cell[14];
+        row[0] = addCellForInvoice(2,3 , shippingMarks); // shipping marks
+        row[1] = addCellForInvoice(2,7 , assortment); // assortment
+        row[2] = addCellForInvoice(2,1 , vndrPack); // VNDR pack
+        row[3] = addCellForInvoice(2,1 , totalVNDRPack); // total VNDR packs
+        row[4] = addCellForInvoice(2,1 , totalUnit); // total unit
+        row[5] = addCellForInvoice(2,1, netVNDRPack); // net vndr pack
+        row[6] = addCellForInvoice(2,1 , netTotal); // net total
+        row[7] = addCellForInvoice(2,1 , ""); // empty field
+        row[8] = addCellForInvoice(2,1 , ""); // empty field
+        row[9] = addCellForInvoice(2,1 , packPrice); // pack price
+        row[10] = addCellForInvoice(2,1 , amountInUSD); // amount in USD
+
+        for(Cell cell: row) {
+            if(cell != null) {
+                invoiceTable.addCell(cell);
+            }
+        }
+    }
+
     private static void createRowForInvoiceTotal(String shippingMarks, String assortment, String whsepack,
                                                  String vndrPack, String totalVNDRPack, String totalUnit,
                                                  String weight, String packPrice, String amountInUSD,
@@ -324,19 +351,14 @@ public class MyOwnPDF {
         row[1] = addCellForInvoiceTotal(2,6 , assortment); // assortment
         row[2] = addCellForInvoice(2,1 , whsepack); // WHSE pack
         row[3] = addCellForInvoice(2,1 , vndrPack); // VNDR pack
-
-        row[4] = addCellForInvoice(1,1 , totalVNDRPack); // total VNDR packs
+        row[4] = addCellForInvoice(2,1 , totalVNDRPack); // total VNDR packs
         row[5] = addCellForInvoice(2,1 , totalUnit); // total unit
-
-        row[6] = addCellForInvoice(1,4 , weight); // weight
-        row[7] = addCellForInvoice(2,1 , packPrice); // pack price
-        row[8] = addCellForInvoice(2,2 , amountInUSD); // amount in USD
-
-        row[9] = addCellForInvoice(1,1 , vndrPackType);  // VNDR PACK type
-        row[10] = addCellForInvoice(1,1, netVNDRPack); // net vndr pack
-        row[11] = addCellForInvoice(1,1 , netTotal); // net total
-        row[12] = addCellForInvoice(1,1 , grossVndrPack); // gross vndr pack
-        row[13] = addCellForInvoice(1,1 , grossTotal); // gross total
+        row[10] = addCellForInvoice(2,1, "");
+        row[7] = addCellForInvoice(2,1 , netVNDRPack); // net vndr pack
+        row[11] = addCellForInvoice(2,1 , grossTotal); // gross total
+        row[12] = addCellForInvoice(2,1 , packPrice); // pack price
+        row[13] = addCellForInvoice(2,1 , amountInUSD); // amount in USD
+        row[8] = addCellForInvoice(2,1 , netTotal); // net total
 
         for(Cell cell: row) {
             if(cell != null) {
