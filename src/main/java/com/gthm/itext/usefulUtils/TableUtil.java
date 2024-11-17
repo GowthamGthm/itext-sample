@@ -26,7 +26,9 @@ public class TableUtil {
                     }
                 }
                 // Set the outer table cell borders to no border
-                cell.setBorder(Border.NO_BORDER);
+                if(cell != null) {
+                    cell.setBorder(Border.NO_BORDER);
+                }
             }
         }
         return table;

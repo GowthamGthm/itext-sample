@@ -62,7 +62,7 @@ public class TableWithComplexHeaders {
             List<Cell[]> rows = new ArrayList<>();
 
             for (int i = 1; i <= list.size(); i++) {
-                for (int j = 1; j <= table.getNumberOfColumns(); j++) {
+//                for (int j = 1; j <= table.getNumberOfColumns(); j++) {
                     Dummy dummy = list.get(i -1);
                     Cell[] row = new Cell[NO_OF_COLUMNS];
                     row[0] = new Cell().add(new Paragraph(dummy.getColumn1() + "-" + dummy.getColumn1()));
@@ -73,12 +73,11 @@ public class TableWithComplexHeaders {
                     row[5] = new Cell().add(new Paragraph(dummy.getColumn6() + "-" + dummy.getColumn6()));
                     row[6] = new Cell().add(new Paragraph(dummy.getColumn7() + "-" + dummy.getColumn7()));
                     rows.add(row);
-                }
+//                }
             }
 
             for(Cell[] row :rows) {
                 for(Cell cell: row) {
-                    System.out.println(cell.getRowspan() + cell.getColspan());
                     table.addCell(cell);
                 }
             }

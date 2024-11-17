@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyOwnPDF {
+public class MyOwnPDFShipperDetails {
 
     static String directory = "C:\\Users\\anon\\Pictures\\output-invoide\\";
     private static String PATH = directory + "my-own.pdf";
@@ -177,63 +177,63 @@ public class MyOwnPDF {
         invoiceTableHeader.setMarginRight(20);
 
         invoiceTableHeader.addCell(new Cell(2, 2).add(TableUtil.getTableHeader("SHIPPING MARKS, PO#,\n PO Type & Dept#")))
-                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-                          .setTextAlignment(TextAlignment.CENTER);
+             .setVerticalAlignment(VerticalAlignment.MIDDLE)
+             .setTextAlignment(TextAlignment.CENTER);
 
         invoiceTableHeader.addCell(new Cell(2, 3).add(TableUtil.getTableHeader("ASSORTMENT/ITEM #, \n COMMERCIAL BRAND & \n DETAILED DESCRIPTION " + "\n AS PER PO")))
-                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-                          .setTextAlignment(TextAlignment.CENTER);
+             .setVerticalAlignment(VerticalAlignment.MIDDLE)
+             .setTextAlignment(TextAlignment.CENTER);
 
         invoiceTableHeader.addCell(new Cell(2, 1).add(TableUtil.getTableHeader("WHSE PACK \n (PCS)")))
-                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-                          .setTextAlignment(TextAlignment.CENTER);
+             .setVerticalAlignment(VerticalAlignment.MIDDLE)
+             .setTextAlignment(TextAlignment.CENTER);
 
         invoiceTableHeader.addCell(new Cell(2, 1).add(TableUtil.getTableHeader("VNDR PACK \n (PCS)")))
-                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-                          .setTextAlignment(TextAlignment.CENTER);
+             .setVerticalAlignment(VerticalAlignment.MIDDLE)
+             .setTextAlignment(TextAlignment.CENTER);
 
         // 5th row
         invoiceTableHeader.addCell(new Cell(1, 1).add(TableUtil.getTableHeader("TOTAL VNDR PACKS")))
-                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-                          .setTextAlignment(TextAlignment.CENTER);
+             .setVerticalAlignment(VerticalAlignment.MIDDLE)
+             .setTextAlignment(TextAlignment.CENTER);
 
         invoiceTableHeader.addCell(new Cell(2, 1).add(TableUtil.getTableHeader("TOTAL UNITS")))
-                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-                          .setTextAlignment(TextAlignment.CENTER);
+             .setVerticalAlignment(VerticalAlignment.MIDDLE)
+             .setTextAlignment(TextAlignment.CENTER);
 
         // 7th row
         invoiceTableHeader.addCell(new Cell(1, 4).add(TableUtil.getTableHeader("WEIGHT (KG)")))
-                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-                          .setTextAlignment(TextAlignment.CENTER);
+             .setVerticalAlignment(VerticalAlignment.MIDDLE)
+             .setTextAlignment(TextAlignment.CENTER);
 
         invoiceTableHeader.addCell(new Cell(2, 1).add(TableUtil.getTableHeader("PACK PRICE \n (USD)")))
-                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-                          .setTextAlignment(TextAlignment.CENTER);
+             .setVerticalAlignment(VerticalAlignment.MIDDLE)
+             .setTextAlignment(TextAlignment.CENTER);
 
         invoiceTableHeader.addCell(new Cell(2, 1).add(TableUtil.getTableHeader("AMOUNT IN \n USD")))
-                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-                          .setTextAlignment(TextAlignment.CENTER);
+             .setVerticalAlignment(VerticalAlignment.MIDDLE)
+             .setTextAlignment(TextAlignment.CENTER);
 
 //         bottom ones
         invoiceTableHeader.addCell(new Cell(1, 1).add(TableUtil.getTableHeader("VNDR PACK TYPE")))
-                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-                          .setTextAlignment(TextAlignment.CENTER);
+             .setVerticalAlignment(VerticalAlignment.MIDDLE)
+             .setTextAlignment(TextAlignment.CENTER);
 
         invoiceTableHeader.addCell(new Cell(1, 1).add(TableUtil.getTableHeader("NET VNDR \n PACK")))
-                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-                          .setTextAlignment(TextAlignment.CENTER);
+             .setVerticalAlignment(VerticalAlignment.MIDDLE)
+             .setTextAlignment(TextAlignment.CENTER);
 
         invoiceTableHeader.addCell(new Cell(1, 1).add(TableUtil.getTableHeader("NET TOTAL")))
-                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-                          .setTextAlignment(TextAlignment.CENTER);
+             .setVerticalAlignment(VerticalAlignment.MIDDLE)
+             .setTextAlignment(TextAlignment.CENTER);
 
         invoiceTableHeader.addCell(new Cell(1, 1).add(TableUtil.getTableHeader("GROSS VNDR PACK")))
-                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-                          .setTextAlignment(TextAlignment.CENTER);
+             .setVerticalAlignment(VerticalAlignment.MIDDLE)
+             .setTextAlignment(TextAlignment.CENTER);
 
         invoiceTableHeader.addCell(new Cell(1, 1).add(TableUtil.getTableHeader("GROSS TOTAL")))
-                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-                          .setTextAlignment(TextAlignment.CENTER);
+             .setVerticalAlignment(VerticalAlignment.MIDDLE)
+             .setTextAlignment(TextAlignment.CENTER);
 
 //        document.add(invoiceTableHeader);
         return invoiceTableHeader;

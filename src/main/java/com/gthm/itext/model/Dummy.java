@@ -37,7 +37,7 @@ public class Dummy {
     public static List<Dummy> getInstances(int length) {
         List<Dummy> list = new ArrayList();
 
-        for(int i =0; i< 10; i++) {
+        for(int i =0; i< length; i++) {
             list.add(new Dummy());
         }
         return list;
