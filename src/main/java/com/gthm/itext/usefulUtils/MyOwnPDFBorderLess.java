@@ -12,22 +12,22 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfPage;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.kernel.pdf.canvas.draw.SolidLine;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
-import com.itextpdf.layout.element.*;
-import com.itextpdf.layout.properties.TabAlignment;
+import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.LineSeparator;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class MyOwnPDF {
+public class MyOwnPDFBorderLess {
 
     static String directory = "C:\\Users\\anon\\Pictures\\output-invoide\\";
     private static String PATH = directory + "my-own.pdf";
@@ -80,7 +80,7 @@ public class MyOwnPDF {
 
 //             start generating the page number
             String outputFilePath =  directory + File.separator + "my-own-page-num.pdf";
-            updateHeaders(headerEventHandler, PATH, outputFilePath);
+            updatePageHeaders(headerEventHandler, PATH, outputFilePath);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -166,17 +166,20 @@ public class MyOwnPDF {
 //        total unit, weight, pack price,amount in USD, VNDR PACK type,
 //        net vndr pack, net total, gross vndr pack, gross total
 
-        createRowForItemInInvoiceTable(EMPTY_BLOCK_TXT, builder.toString(), EMPTY_BLOCK_TXT, "14", "42",
-                "588", EMPTY_BLOCK_TXT, "83.9322", "49352.1336", EMPTY_BLOCK_TXT,
-                "210.0000", "8820.0000", EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, invoiceTable);
+        createRowForItemInInvoiceTable(EMPTY_BLOCK_TXT, builder.toString(), EMPTY_BLOCK_TXT, "14",
+                "42", "588", EMPTY_BLOCK_TXT, "83.9322", "49352.1336",
+                EMPTY_BLOCK_TXT, "210.0000", "8820.0000", EMPTY_BLOCK_TXT,
+                EMPTY_BLOCK_TXT, invoiceTable);
 
         builder.setLength(0);
         builder.append("ITEM DESCRIPTION: ").append("15PC HARD ANODIZED COOKEWARE SET").append(System.lineSeparator());
-        builder.append(TAB).append("COMPONENT DETAILS: ").append(System.lineSeparator());
+        builder.append(TAB).append("  COMPONENT DETAILS: ").append(System.lineSeparator());
 
 
-        createExpandingRowForInvoiceTable(EMPTY_BLOCK_TXT, builder.toString(), EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, invoiceTable);
-
+        createExpandingRowForInvoiceTable(EMPTY_BLOCK_TXT, builder.toString(), EMPTY_BLOCK_TXT,
+                EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
+                EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
+                EMPTY_BLOCK_TXT, invoiceTable);
 
 //         clear builder to reuse
         builder.setLength(0);
@@ -184,13 +187,12 @@ public class MyOwnPDF {
 //        build the Common Name
         for (int i = 0; i < 1; i++) {
 
-            builder.append(TAB).append("  COMMON NAME: ").append("2QT COVERED SAUCE PAN").append(System.lineSeparator());
-            builder.append(TAB).append(TAB).append("BREAKDOWN:").append(System.lineSeparator());
-//            builder.append(TAB).append(TAB).append("BREAKDOWN:").append(System.lineSeparator());
-            builder.append(TAB).append(TAB).append("STAINLESS STEEL - ").append("20%").append(System.lineSeparator());
-            builder.append(TAB).append(TAB).append("GLASS - ").append("25%").append(System.lineSeparator());
-            builder.append(TAB).append(TAB).append("ALUMINUM - ").append("55%").append(System.lineSeparator());
-            builder.append(TAB).append("  VALUE: ").append("7.8391").append(System.lineSeparator())
+            builder.append(TAB).append("   COMMON NAME: ").append("2QT COVERED SAUCE PAN").append(System.lineSeparator());
+            builder.append(TAB).append(TAB).append("    BREAKDOWN:").append(System.lineSeparator());
+            builder.append(TAB).append(TAB).append("    STAINLESS STEEL - ").append("20%").append(System.lineSeparator());
+            builder.append(TAB).append(TAB).append("    GLASS - ").append("25%").append(System.lineSeparator());
+            builder.append(TAB).append(TAB).append("    ALUMINUM - ").append("55%").append(System.lineSeparator());
+            builder.append(TAB).append("   VALUE: ").append("7.8391").append(System.lineSeparator())
                    .append(System.lineSeparator()).append(System.lineSeparator());
 
             createExpandingRowForInvoiceTable(EMPTY_BLOCK_TXT, builder.toString(), EMPTY_BLOCK_TXT,
@@ -201,7 +203,6 @@ public class MyOwnPDF {
         }
 
         builder.setLength(0);
-//        builder.append(System.lineSeparator());
         builder.append("ASSEMBLY MANUFACTURER:").append(System.lineSeparator());
         builder.append("NAME: ").append("GUANGDONG MASTER GROUP CO., LTD").append(System.lineSeparator());
         builder.append("ADDRESS: ")
@@ -210,10 +211,10 @@ public class MyOwnPDF {
                .append(System.lineSeparator())
                .append(System.lineSeparator());
 
-        createExpandingRowForInvoiceTable(EMPTY_BLOCK_TXT, builder.toString(), EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, invoiceTable);
-
-
-
+        createExpandingRowForInvoiceTable(EMPTY_BLOCK_TXT, builder.toString(), EMPTY_BLOCK_TXT,
+                EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
+                EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
+                EMPTY_BLOCK_TXT, invoiceTable);
 
     }
 
@@ -244,19 +245,11 @@ public class MyOwnPDF {
         row[1] = addCellForInvoice(2,9 , assortment); // assortment
         row[2] = addCellForInvoice(2,1 , whsepack); // WHSE pack
         row[3] = addCellForInvoice(2,1 , vndrPack); // VNDR pack
-
-//        row[4] = addCellForInvoice(1,1 , totalVNDRPack); // total VNDR packs
-        row[5] = addCellForInvoice(2,1 , totalUnit); // total unit
-
-        row[6] = addCellForInvoice(1,0 , weight); // weight
-        row[7] = addCellForInvoice(2,1 , packPrice); // pack price
-        row[8] = addCellForInvoice(2,2 , amountInUSD); // amount in USD
-
-//        row[9] = addCellForInvoice(1,1 , vndrPackType);  // VNDR PACK type
-        row[10] = addCellForInvoice(1,1, netVNDRPack); // net vndr pack
-//        row[11] = addCellForInvoice(1,1 , netTotal); // net total
-//        row[12] = addCellForInvoice(1,1 , grossVndrPack); // gross vndr pack
-//        row[13] = addCellForInvoice(1,1 , grossTotal); // gross total
+        row[4] = addCellForInvoice(2,1 , totalUnit); // total unit
+        row[5] = addCellForInvoice(1,0 , weight); // weight
+        row[6] = addCellForInvoice(2,1 , packPrice); // pack price
+        row[7] = addCellForInvoice(2,2 , amountInUSD); // amount in USD
+        row[8] = addCellForInvoice(1,1, netVNDRPack); // net vndr pack
 
         for(Cell cell: row) {
             if(cell != null) {
@@ -295,7 +288,6 @@ public class MyOwnPDF {
     }
 
     private static void generateAssortmentItems(Table invoiceTable) {
-        List<Cell[]> rowsForShippingMarks = new ArrayList<>();
 
         StringBuilder assortmentBuilder = new StringBuilder();
         assortmentBuilder.append("ITEM # ").append("980272065").append(System.lineSeparator());
@@ -320,14 +312,11 @@ public class MyOwnPDF {
         row[1] = addCellForInvoice(2,6 , assortment); // assortment
         row[2] = addCellForInvoice(2,1 , whsepack); // WHSE pack
         row[3] = addCellForInvoice(2,1 , vndrPack); // VNDR pack
-
         row[4] = addCellForInvoice(1,1 , totalVNDRPack); // total VNDR packs
         row[5] = addCellForInvoice(2,1 , totalUnit); // total unit
-
         row[6] = addCellForInvoice(1,4 , weight); // weight
         row[7] = addCellForInvoice(2,1 , packPrice); // pack price
         row[8] = addCellForInvoice(2,2 , amountInUSD); // amount in USD
-
         row[9] = addCellForInvoice(1,1 , vndrPackType);  // VNDR PACK type
         row[10] = addCellForInvoice(1,1, netVNDRPack); // net vndr pack
         row[11] = addCellForInvoice(1,1 , netTotal); // net total
@@ -378,16 +367,16 @@ public class MyOwnPDF {
         Cell[] row = new Cell[14];
         row[0] = addCellForInvoice(2,3 , shippingMarks); // shipping marks
         row[1] = addCellForInvoiceTotal(2,6 , assortment); // assortment
-        row[2] = addCellForInvoice(2,1 , whsepack); // WHSE pack
-        row[3] = addCellForInvoice(2,1 , vndrPack); // VNDR pack
-        row[4] = addCellForInvoice(2,1 , totalVNDRPack); // total VNDR packs
-        row[5] = addCellForInvoice(2,1 , totalUnit); // total unit
-        row[10] = addCellForInvoice(2,1, "");
-        row[7] = addCellForInvoice(2,1 , netVNDRPack); // net vndr pack
-        row[11] = addCellForInvoice(2,1 , grossTotal); // gross total
-        row[12] = addCellForInvoice(2,1 , packPrice); // pack price
-        row[13] = addCellForInvoice(2,1 , amountInUSD); // amount in USD
-        row[8] = addCellForInvoice(2,1 , netTotal); // net total
+        row[2] = addCellForInvoiceTotalWithBorder(2,1 , whsepack); // WHSE pack
+        row[3] = addCellForInvoiceTotalWithBorder(2,1 , vndrPack); // VNDR pack
+        row[4] = addCellForInvoiceTotalWithBorder(2,1 , totalVNDRPack); // total VNDR packs
+        row[5] = addCellForInvoiceTotalWithBorder(2,1 , totalUnit); // total unit
+        row[6] = addCellForInvoiceTotalWithBorder(2,1, "");
+        row[7] = addCellForInvoiceTotalWithBorder(2,1 , netVNDRPack); // net vndr pack
+        row[8] = addCellForInvoiceTotalWithBorder(2,1 , grossTotal); // gross total
+        row[9] = addCellForInvoiceTotalWithBorder(2,1 , packPrice); // pack price
+        row[10] = addCellForInvoiceTotalWithBorder(2,1 , amountInUSD); // amount in USD
+        row[11] = addCellForInvoiceTotalWithBorder(2,1 , netTotal); // net total
 
         for(Cell cell: row) {
             if(cell != null) {
@@ -401,7 +390,10 @@ public class MyOwnPDF {
 //        shippingMarks , assortment , WHSE pack ,VNDR pack, total VNDR packs, total unit, weight, pack price,
 //        amount in USD, VNDR PACK type, net vndr pack, net total, gross vndr pack, gross total
 
-        createRowForInvoiceTable(shippingMarks, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, invoiceTable);
+        createRowForInvoiceTable(shippingMarks, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
+                EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
+                EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
+                invoiceTable);
     }
 
     private static Cell addCellForInvoice(int rowSpan, int colSpan, String content) {
@@ -410,14 +402,17 @@ public class MyOwnPDF {
                 .setFontSize(8)
                 .setPaddingLeft(5);
 
-        // Split content into parts where you want tabs
-//        String[] parts = content.split("\t"); // Use \t to define tabs in your input text
-//        for (int i = 0; i < parts.length; i++) {
-//            paragraph.add(parts[i]); // Add each part
-//            if (i < parts.length - 1) {
-//                paragraph.add(new Tab()); // Add a tab between parts
-//            }
-//        }
+        Cell cell = new Cell(rowSpan, colSpan).add(paragraph);
+        cell.setBorder(Border.NO_BORDER);
+        cell.setTextAlignment(TextAlignment.LEFT);
+        return cell;
+    }
+
+    private static Cell addCellForInvoiceTotalWithBorder(int rowSpan, int colSpan, String content) {
+
+        Paragraph paragraph = new Paragraph(content)
+                .setFontSize(8)
+                .setPaddingLeft(5);
 
         Cell cell = new Cell(rowSpan, colSpan).add(paragraph);
 //        cell.setBorder(Border.NO_BORDER);
@@ -493,12 +488,10 @@ public class MyOwnPDF {
 
         float[] columnWidths = { 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 , 100 , 100};
 
-//        Table invoiceTableHeader = new Table(15);
         Table invoiceTableHeader = new Table(columnWidths);
         invoiceTableHeader.setWidth(UnitValue.createPercentValue(100));
         invoiceTableHeader.setMarginLeft(20);
         invoiceTableHeader.setMarginRight(20);
-//        invoiceTableHeader.setKeepTogether(true);
 
         invoiceTableHeader.addCell(new Cell(2, 3).add(TableUtil.getTableHeader("SHIPPING MARKS, PO#,\n PO Type & Dept#")))
                           .setVerticalAlignment(VerticalAlignment.MIDDLE)
@@ -559,7 +552,6 @@ public class MyOwnPDF {
                           .setVerticalAlignment(VerticalAlignment.MIDDLE)
                           .setTextAlignment(TextAlignment.CENTER);
 
-//        document.add(invoiceTableHeader);
         return invoiceTableHeader;
     }
 
@@ -569,7 +561,6 @@ public class MyOwnPDF {
                                                                                       .setTextAlignment(TextAlignment.CENTER)
                                                                                       .setMarginTop(5);
         document.add(packagingList);
-
 
         // Create a table with 2 columns
         PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
@@ -581,16 +572,16 @@ public class MyOwnPDF {
         table.setWidth(UnitValue.createPercentValue(100));
 
         Paragraph firstRowParagraph = new Paragraph("SOLD TO:").setFontSize(9)
-                                                               .add("\n")
+                                                               .add(System.lineSeparator())
                                                                .setTextAlignment(TextAlignment.LEFT)
                                                                .add("WALMART INC. \n 508 SW 8TH STREET")
-                                                               .add("\n")
+                                                               .add(System.lineSeparator())
                                                                .add("BENTONVILLE")
-                                                               .add("\n")
+                                                               .add(System.lineSeparator())
                                                                .add("AR")
-                                                               .add("\n")
+                                                               .add(System.lineSeparator())
                                                                .add("US")
-                                                               .add("\n")
+                                                               .add(System.lineSeparator())
                                                                .add("72716");
 
         Table secondTable = new Table(new float[]{1, 1});
@@ -709,7 +700,6 @@ public class MyOwnPDF {
         Paragraph namedPlaceValue = new Paragraph("YANTIAN").setFontSize(9);
         thirdTable.addCell(namedPlaceValue)
                   .setBorder(Border.NO_BORDER);
-//        thirdParagraph.add("\n");
 
 //        COUNTRY OF LOADING:
         Paragraph lodingCountry = new Paragraph("COUNTRY OF LOADING:").setFontSize(9);
@@ -719,7 +709,6 @@ public class MyOwnPDF {
         Paragraph lodingCountryValue = new Paragraph("CN").setFontSize(9);
         thirdTable.addCell(lodingCountryValue)
                   .setBorder(Border.NO_BORDER);
-//        thirdParagraph.add("\n");
 
 // COUNTRY OF ORIGIN:
         Paragraph originCountry = new Paragraph("COUNTRY OF ORIGIN:").setFontSize(9);
@@ -756,7 +745,8 @@ public class MyOwnPDF {
     }
 
 
-    private static void updateHeaders(HeaderEventHandler headerEventHandler, String sourcePdfPath , String targetPdfPath) throws IOException {
+    private static void updatePageHeaders(HeaderEventHandler headerEventHandler, String sourcePdfPath ,
+                                          String targetPdfPath) throws IOException {
 
         PdfReader reader = new PdfReader(sourcePdfPath);
         PdfWriter finalWriter = new PdfWriter(targetPdfPath);
@@ -767,7 +757,6 @@ public class MyOwnPDF {
         // Update the header on each page
         for (int pageNumber = 1; pageNumber <= totalPageCount; pageNumber++) {
             PdfPage page = updatedPdf.getPage(pageNumber);
-            PdfCanvas canvas = new PdfCanvas(page);
             headerEventHandler.updatePageHeaders(page, pageNumber, totalPageCount);
         }
 
