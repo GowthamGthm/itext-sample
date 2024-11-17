@@ -112,7 +112,7 @@ public class Table4 {
             builder.append(TAB).append("VALUE: ").append("7.8391").append(System.lineSeparator())
                    .append(System.lineSeparator()).append(System.lineSeparator());
 
-            createRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
+            createExpandingRowForInvoiceTable(EMPTY_TEXT, builder.toString(), EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, EMPTY_TEXT, invoiceTable);
 
         }
 
@@ -174,18 +174,18 @@ public class Table4 {
 
         Cell[] row = new Cell[14];
         row[0] = addCellForInvoice(2,3 , shippingMarks); // shipping marks
-        row[1] = addCellForInvoice(2,8 , assortment); // assortment
+        row[1] = addCellForInvoice(2,9 , assortment); // assortment
         row[2] = addCellForInvoice(2,1 , whsepack); // WHSE pack
         row[3] = addCellForInvoice(2,1 , vndrPack); // VNDR pack
 
-        row[4] = addCellForInvoice(1,1 , totalVNDRPack); // total VNDR packs
+//        row[4] = addCellForInvoice(1,1 , totalVNDRPack); // total VNDR packs
         row[5] = addCellForInvoice(2,1 , totalUnit); // total unit
 
         row[6] = addCellForInvoice(1,0 , weight); // weight
         row[7] = addCellForInvoice(2,1 , packPrice); // pack price
         row[8] = addCellForInvoice(2,2 , amountInUSD); // amount in USD
 
-        row[9] = addCellForInvoice(1,1 , vndrPackType);  // VNDR PACK type
+//        row[9] = addCellForInvoice(1,1 , vndrPackType);  // VNDR PACK type
         row[10] = addCellForInvoice(1,1, netVNDRPack); // net vndr pack
 //        row[11] = addCellForInvoice(1,1 , netTotal); // net total
 //        row[12] = addCellForInvoice(1,1 , grossVndrPack); // gross vndr pack
