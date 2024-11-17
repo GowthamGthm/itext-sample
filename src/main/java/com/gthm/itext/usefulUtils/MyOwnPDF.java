@@ -16,10 +16,8 @@ import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.kernel.pdf.canvas.draw.SolidLine;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.LineSeparator;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.element.*;
+import com.itextpdf.layout.properties.TabAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
@@ -170,8 +168,6 @@ public class MyOwnPDF {
                 "588", DUMMY_TEXT, "83.9322", "49352.1336", DUMMY_TEXT,
                 "210.0000", "8820.0000", DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
 
-
-
         builder.setLength(0);
         builder.append("ITEM DESCRIPTION: ").append("15PC HARD ANODIZED COOKEWARE SET").append(System.lineSeparator());
         builder.append(TAB).append("COMPONENT DETAILS: ").append(System.lineSeparator());
@@ -230,11 +226,47 @@ public class MyOwnPDF {
         builder.append("VENDOR STK # ").append("15PCHA").append(System.lineSeparator());
 
 
-        createRowForIncomeTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+//        createRowForIncomeTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+//                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+//                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+
+        createExpandingRowForInvoiceTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
                 DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
                 DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
 
+    }
 
+    private static void createExpandingRowForInvoiceTable(String shippingMarks, String assortment, String whsepack,
+                                                          String vndrPack, String totalVNDRPack, String totalUnit,
+                                                          String weight, String packPrice, String amountInUSD,
+                                                          String vndrPackType, String netVNDRPack, String netTotal,
+                                                          String grossVndrPack, String grossTotal, Table invoiceTable
+    ) {
+
+        Cell[] row = new Cell[14];
+        row[0] = addCellForInvoice(2,3 , shippingMarks); // shipping marks
+        row[1] = addCellForInvoice(2,8 , assortment); // assortment
+        row[2] = addCellForInvoice(2,1 , whsepack); // WHSE pack
+        row[3] = addCellForInvoice(2,1 , vndrPack); // VNDR pack
+
+        row[4] = addCellForInvoice(1,1 , totalVNDRPack); // total VNDR packs
+        row[5] = addCellForInvoice(2,1 , totalUnit); // total unit
+
+        row[6] = addCellForInvoice(1,0 , weight); // weight
+        row[7] = addCellForInvoice(2,1 , packPrice); // pack price
+        row[8] = addCellForInvoice(2,2 , amountInUSD); // amount in USD
+
+        row[9] = addCellForInvoice(1,1 , vndrPackType);  // VNDR PACK type
+        row[10] = addCellForInvoice(1,1, netVNDRPack); // net vndr pack
+//        row[11] = addCellForInvoice(1,1 , netTotal); // net total
+//        row[12] = addCellForInvoice(1,1 , grossVndrPack); // gross vndr pack
+//        row[13] = addCellForInvoice(1,1 , grossTotal); // gross total
+
+        for(Cell cell: row) {
+            if(cell != null) {
+                invoiceTable.addCell(cell);
+            }
+        }
     }
 
     private static void generateAssortmentItems(Table invoiceTable) {
@@ -259,8 +291,8 @@ public class MyOwnPDF {
     ) {
 
         Cell[] row = new Cell[14];
-        row[0] = addCellForInvoice(2,2 , shippingMarks); // shipping marks
-        row[1] = addCellForInvoice(2,3 , assortment); // assortment
+        row[0] = addCellForInvoice(2,3 , shippingMarks); // shipping marks
+        row[1] = addCellForInvoice(2,6 , assortment); // assortment
         row[2] = addCellForInvoice(2,1 , whsepack); // WHSE pack
         row[3] = addCellForInvoice(2,1 , vndrPack); // VNDR pack
 
@@ -295,7 +327,23 @@ public class MyOwnPDF {
     }
 
     private static Cell addCellForInvoice(int rowSpan, int colSpan, String content) {
-        Paragraph paragraph = new Paragraph(content).setFontSize(9);
+//        Paragraph paragraph = new Paragraph(content).setFontSize(8).setPaddingLeft(5);
+
+        // Create a Paragraph with tab stops
+        Paragraph paragraph = new Paragraph()
+                .setFontSize(8)
+                .setPaddingLeft(5)
+                .addTabStops(new TabStop(4, TabAlignment.LEFT));
+
+        // Split content into parts where you want tabs
+        String[] parts = content.split("\t"); // Use \t to define tabs in your input text
+        for (int i = 0; i < parts.length; i++) {
+            paragraph.add(parts[i]); // Add each part
+            if (i < parts.length - 1) {
+                paragraph.add(new Tab()); // Add a tab between parts
+            }
+        }
+
         Cell cell = new Cell(rowSpan, colSpan).add(paragraph);
 //        cell.setBorder(Border.NO_BORDER);
         cell.setTextAlignment(TextAlignment.LEFT);
@@ -357,7 +405,7 @@ public class MyOwnPDF {
 
     private static Table generateInvoiceTableHeader(Document document) throws IOException {
 
-        float[] columnWidths = { 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 , 100};
+        float[] columnWidths = { 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 , 100 , 100};
 
 //        Table invoiceTableHeader = new Table(15);
         Table invoiceTableHeader = new Table(columnWidths);
@@ -366,11 +414,11 @@ public class MyOwnPDF {
         invoiceTableHeader.setMarginRight(20);
         invoiceTableHeader.setKeepTogether(true);
 
-        invoiceTableHeader.addCell(new Cell(2, 2).add(TableUtil.getTableHeader("SHIPPING MARKS, PO#,\n PO Type & Dept#")))
+        invoiceTableHeader.addCell(new Cell(2, 3).add(TableUtil.getTableHeader("SHIPPING MARKS, PO#,\n PO Type & Dept#")))
                           .setVerticalAlignment(VerticalAlignment.MIDDLE)
                           .setTextAlignment(TextAlignment.CENTER);
 
-        invoiceTableHeader.addCell(new Cell(2, 3).add(TableUtil.getTableHeader("ASSORTMENT/ITEM #, \n COMMERCIAL BRAND & \n DETAILED DESCRIPTION " + "\n AS PER PO")))
+        invoiceTableHeader.addCell(new Cell(2, 6).add(TableUtil.getTableHeader("ASSORTMENT/ITEM #, \n COMMERCIAL BRAND & \n DETAILED DESCRIPTION " + "\n AS PER PO")))
                           .setVerticalAlignment(VerticalAlignment.MIDDLE)
                           .setTextAlignment(TextAlignment.CENTER);
 
