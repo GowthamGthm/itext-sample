@@ -15,6 +15,8 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 
+import java.io.Serializable;
+
 public class HeaderEventHandler implements IEventHandler {
 
     private final String soldTo;
@@ -57,11 +59,12 @@ public class HeaderEventHandler implements IEventHandler {
         Table headerTable = new Table(UnitValue.createPercentArray(new float[]{2, 2, 2, 2}))
                 .useAllAvailableWidth();
 
-        headerTable.addCell(createHeaderCell("SOLD TO: " + soldTo));
-        headerTable.addCell(createHeaderCell("INVOICE #: " + invoiceNumber));
-        headerTable.addCell(createHeaderCell("DATE: " + date));
-        headerTable.addCell(createHeaderCell("PAGE " + pageNumber +
-                " of " + (totalPageCount > 0 ? totalPageCount : "##")));
+        String pageCount = totalPageCount > 0 ? totalPageCount+ "" : "##";
+
+        headerTable.addCell(createHeaderCell("SOLD TO: " + soldTo, true));
+        headerTable.addCell(createHeaderCell("INVOICE #: " + invoiceNumber, true));
+        headerTable.addCell(createHeaderCell("DATE: " + date , true));
+        headerTable.addCell(createHeaderCell("PAGE " + pageNumber + " of " + pageCount , false));
 
         float headerY = pageSize.getTop() - 30;
         float width = pageSize.getWidth();
@@ -72,14 +75,15 @@ public class HeaderEventHandler implements IEventHandler {
         canvas.close();
     }
 
-    private Cell createHeaderCell(String content) {
+    private Cell createHeaderCell(String content , boolean bold) {
 
-        return new Cell().add(new Paragraph(content))
-                         .setBorder(Border.NO_BORDER)
-                         .setTextAlignment(TextAlignment.LEFT)
-                         .setBackgroundColor(ColorConstants.WHITE)
-                         .setBold();
+        Cell cell = new Cell().add(new Paragraph(content).setFontSize(10))
+                              .setBorder(Border.NO_BORDER)
+                              .setTextAlignment(TextAlignment.LEFT)
+                              .setBackgroundColor(ColorConstants.WHITE);
 
+        cell.setProperty(8, bold);
+        return cell;
     }
 
 }

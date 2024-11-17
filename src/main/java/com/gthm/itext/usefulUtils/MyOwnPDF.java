@@ -35,6 +35,7 @@ public class MyOwnPDF {
     private static String PATH = directory + "my-own.pdf";
 
     private static String DUMMY_TEXT = "-NA-";
+    private static String TAB = "\t";
 
 
     public static void main(String[] args) {
@@ -85,10 +86,95 @@ public class MyOwnPDF {
 //         generate values for ASSORTMENT ITEMS
         generateAssortmentItems(invoiceTable);
 
+//        generate product description
+         generateProductDescription(invoiceTable);
+
+//          generate item row
+        generateItem(invoiceTable);
 
 
 //        Table invoiceTable1 = TableUtil.removeBorder(invoiceTable);
         document.add(invoiceTable);
+
+    }
+
+    private static void generateItem(Table invoiceTable) {
+
+        StringBuilder builder = new StringBuilder();
+        builder.append("ITEM # ").append("980272065").append(System.lineSeparator());
+
+
+//        shippingMarks , assortment , WHSE pack ,VNDR pack, total VNDR packs,
+//        total unit, weight, pack price,amount in USD, VNDR PACK type,
+//        net vndr pack, net total, gross vndr pack, gross total
+
+        createRowForIncomeTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, "14", "42",
+                "588", DUMMY_TEXT, "83.9322", "49352.1336", DUMMY_TEXT,
+                "210.0000", "8820.0000", DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+
+
+
+        builder.setLength(0);
+        builder.append("ITEM DESCRIPTION: ").append("15PC HARD ANODIZED COOKEWARE SET").append(System.lineSeparator());
+        builder.append(TAB).append("COMPONENT DETAILS: ").append(System.lineSeparator());
+
+
+        createRowForIncomeTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+
+
+//         clear builder to reuse
+        builder.setLength(0);
+
+//        build the Common Name
+        for (int i = 0; i < 5; i++) {
+
+            builder.append(TAB).append("COMMON NAME: ").append("2QT COVERED SAUCE PAN").append(System.lineSeparator());
+            builder.append(TAB).append(TAB).append("BREAKDOWN:").append(System.lineSeparator());
+            builder.append(TAB).append(TAB).append("BREAKDOWN:").append(System.lineSeparator());
+            builder.append(TAB).append(TAB).append("STAINLESS STEEL - ").append("20%").append(System.lineSeparator());
+            builder.append(TAB).append(TAB).append("GLASS - ").append("25%").append(System.lineSeparator());
+            builder.append(TAB).append(TAB).append("ALUMINUM - ").append("55%").append(System.lineSeparator());
+            builder.append(TAB).append("VALUE: ").append("7.8391").append(System.lineSeparator());
+
+            createRowForIncomeTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+                    DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+                    DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+
+        }
+
+        builder.setLength(0);
+
+        builder.append(System.lineSeparator());
+        builder.append("ASSEMBLY MANUFACTURER:").append(System.lineSeparator());
+        builder.append("NAME: ").append("GUANGDONG MASTER GROUP CO., LTD").append(System.lineSeparator());
+        builder.append("ADDRESS: ")
+               .append("NO. 48-50 SOUTH SECTION, DANAN ROAD, XINXING COUNTY, YUNFU, GD, CN, 527300, 8618023382230")
+               .append(System.lineSeparator())
+               .append(System.lineSeparator())
+               .append(System.lineSeparator());
+
+        createRowForIncomeTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+
+
+
+
+    }
+
+    private static void generateProductDescription(Table invoiceTable) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("PRODUCT DESCRIPTION: ").append("15PC HARD ANODIZED COOKEWARE SET").append(System.lineSeparator());
+        builder.append("ADDITIONAL PRODUCT DESCRIPTION: ").append(System.lineSeparator()).append(System.lineSeparator());
+        builder.append("VENDOR STK # ").append("15PCHA").append(System.lineSeparator());
+
+
+        createRowForIncomeTable(DUMMY_TEXT, builder.toString(), DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
+
 
     }
 
@@ -99,78 +185,54 @@ public class MyOwnPDF {
         assortmentBuilder.append("ITEM # ").append("980272065").append(System.lineSeparator());
         assortmentBuilder.append("UPC # ").append("193968069360").append(System.lineSeparator());
         assortmentBuilder.append("COUNTRY ORIGIN: ").append("CHINA").append(System.lineSeparator());
-        assortmentBuilder.append("PRODUCT DESCRIPTION: ").append("15PC HARD ANODIZED COOKEWARE SET").append(System.lineSeparator());
-        assortmentBuilder.append("ADDITIONAL PRODUCT DESCRIPTION: ").append("").append(System.lineSeparator());
+
+        createRowForIncomeTable(DUMMY_TEXT, assortmentBuilder.toString(), "1", "14", "42",
+                "588", DUMMY_TEXT, "1175.0508", "49352.1336", "PALLET(S)",
+                "210.0000", "8820.0000", "238.3500", "10010.7000", invoiceTable);
+
+    }
+
+    private static void createRowForIncomeTable(String shippingMarks, String assortment, String whsepack,
+                                        String vndrPack, String totalVNDRPack, String totalUnit,
+                                        String weight, String packPrice, String amountInUSD,
+                                        String vndrPackType, String netVNDRPack, String netTotal,
+                                        String grossVndrPack, String grossTotal, Table invoiceTable
+    ) {
 
         Cell[] row = new Cell[14];
-        row[0] = addCellForInvoice(2,2 , ""); // shipping marks
-        row[1] = addCellForInvoice(2,3 , assortmentBuilder.toString()); // assortment
-        row[2] = addCellForInvoice(2,1 , "1"); // WHSE pack
-        row[3] = addCellForInvoice(2,1 , "14"); // VNDR pack
+        row[0] = addCellForInvoice(2,2 , shippingMarks); // shipping marks
+        row[1] = addCellForInvoice(2,3 , assortment); // assortment
+        row[2] = addCellForInvoice(2,1 , whsepack); // WHSE pack
+        row[3] = addCellForInvoice(2,1 , vndrPack); // VNDR pack
 
-        row[4] = addCellForInvoice(1,1 , "42"); // total VNDR packs
-        row[5] = addCellForInvoice(2,1 , "588"); // total unit
+        row[4] = addCellForInvoice(1,1 , totalVNDRPack); // total VNDR packs
+        row[5] = addCellForInvoice(2,1 , totalUnit); // total unit
 
-        row[6] = addCellForInvoice(1,4 , DUMMY_TEXT); // weight
-        row[7] = addCellForInvoice(2,1 , "1175.0508"); // pack price
-        row[8] = addCellForInvoice(2,2 , "49352.1336"); // amount in USD
+        row[6] = addCellForInvoice(1,4 , weight); // weight
+        row[7] = addCellForInvoice(2,1 , packPrice); // pack price
+        row[8] = addCellForInvoice(2,2 , amountInUSD); // amount in USD
 
-        row[9] = addCellForInvoice(1,1 , "PALLET(S)");  // VNDR PACK type
-        row[10] = addCellForInvoice(1,1, "210.0000"); // net vndr pack
-        row[11] = addCellForInvoice(1,1 , "8820.0000"); // net total
-        row[12] = addCellForInvoice(1,1 , "238.3500 "); // gross vndr pack
-        row[13] = addCellForInvoice(1,1 , "10010.7000"); // gross total
+        row[9] = addCellForInvoice(1,1 , vndrPackType);  // VNDR PACK type
+        row[10] = addCellForInvoice(1,1, netVNDRPack); // net vndr pack
+        row[11] = addCellForInvoice(1,1 , netTotal); // net total
+        row[12] = addCellForInvoice(1,1 , grossVndrPack); // gross vndr pack
+        row[13] = addCellForInvoice(1,1 , grossTotal); // gross total
 
-        rowsForShippingMarks.add(row);
-
-
-        // add shipping mark rows to table
-        for(Cell[] oneRow : rowsForShippingMarks) {
-            for(Cell cell: oneRow) {
+            for(Cell cell: row) {
                 if(cell != null) {
                     invoiceTable.addCell(cell);
                 }
             }
-        }
-
     }
 
     private static void generateShippingMarksRow(String shippingMarks, Table invoiceTable) {
-        List<Cell[]> rowsForShippingMarks = new ArrayList<>();
 
 //        shippingMarks , assortment , WHSE pack ,VNDR pack, total VNDR packs, total unit, weight, pack price,
 //        amount in USD, VNDR PACK type, net vndr pack, net total, gross vndr pack, gross total
 
-        Cell[] row = new Cell[14];
-        row[0] = addCellForInvoice(2,2 , shippingMarks); // shipping marks
-        row[1] = addCellForInvoice(2,3 , DUMMY_TEXT); // assortment
-        row[2] = addCellForInvoice(2,1 , DUMMY_TEXT); // WHSE pack
-        row[3] = addCellForInvoice(2,1 , DUMMY_TEXT); // VNDR pack
-
-        row[4] = addCellForInvoice(1,1 , DUMMY_TEXT); // total VNDR packs
-        row[5] = addCellForInvoice(2,1 , DUMMY_TEXT); // total unit
-
-        row[6] = addCellForInvoice(1,4 , DUMMY_TEXT); // weight
-        row[7] = addCellForInvoice(2,1 , DUMMY_TEXT); // pack price
-        row[8] = addCellForInvoice(2,2 , DUMMY_TEXT); // amount in USD
-
-        row[9] = addCellForInvoice(1,1 , DUMMY_TEXT);  // VNDR PACK type
-        row[10] = addCellForInvoice(1,1, DUMMY_TEXT); // net vndr pack
-        row[11] = addCellForInvoice(1,1 , DUMMY_TEXT); // net total
-        row[12] = addCellForInvoice(1,1 , DUMMY_TEXT); // gross vndr pack
-        row[13] = addCellForInvoice(1,1 , DUMMY_TEXT); // gross total
-
-        rowsForShippingMarks.add(row);
-
-
-        // add shipping mark rows to table
-        for(Cell[] oneRow : rowsForShippingMarks) {
-            for(Cell cell: oneRow) {
-                if(cell != null) {
-                    invoiceTable.addCell(cell);
-                }
-            }
-        }
+        createRowForIncomeTable(shippingMarks, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
+                DUMMY_TEXT, DUMMY_TEXT , invoiceTable);
     }
 
     private static Cell addCellForInvoice(int rowSpan, int colSpan, String content) {
