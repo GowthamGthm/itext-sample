@@ -1,8 +1,8 @@
-package com.gthm.itext.usefulUtils;
-
+package com.gthm.itext.table;
 
 import com.gthm.itext.events.HeaderEventHandler;
 import com.gthm.itext.model.dummy.InvoiceContents;
+import com.gthm.itext.util.TableUtil;
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.events.PdfDocumentEvent;
@@ -28,7 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class Working {
+public class MyOwnPDFBorderLess {
 
     static String directory = "C:\\Users\\anon\\Pictures\\output-invoide\\";
     private static String PATH = directory + "my-own.pdf";
@@ -95,7 +95,7 @@ public class Working {
 
         Paragraph descriptionPara = new Paragraph("DESCRIPTION, ORIGIN, QUANTITY, COST OF ANY FREE SUPPLIED PART(S):")
                 .setFontSize(8)
-                .setTextAlignment(TextAlignment.LEFT)
+                 .setTextAlignment(TextAlignment.LEFT)
                 .setMarginLeft(30);
 
         document.add(descriptionPara);
@@ -105,14 +105,14 @@ public class Working {
 
 //         signature
         Paragraph namePara = new Paragraph("JANE").setFontSize(8)
-                                                  .setTextAlignment(TextAlignment.LEFT).setMarginTop(20)
-                                                  .setMarginLeft(30);
+                                                   .setTextAlignment(TextAlignment.LEFT).setMarginTop(20)
+                .setMarginLeft(30);
 
         document.add(namePara);
 
         Paragraph shippingSpecialist = new Paragraph("SHIPPING SPECIALIST").setFontSize(8)
-                                                                           .setTextAlignment(TextAlignment.LEFT)
-                                                                           .setMarginLeft(30);
+                                                  .setTextAlignment(TextAlignment.LEFT)
+                .setMarginLeft(30);
 
         document.add(shippingSpecialist);
 
@@ -123,9 +123,10 @@ public class Working {
 
         String invoiceTotal = "INVOICE TOTAL ";
 
+//        7,10,13
         createRowForInvoiceTotal("", invoiceTotal, "1", "14", "42",
-                "588", null, "83.9322", "49352.13", "",
-                "210.0000", "8820.0000", "", "10010.7000", invoiceTable);
+                "588",  "83.9322", "49352.13",
+                "210.0000", "8820.0000",  "10010.7000", invoiceTable);
 
 
 
@@ -144,7 +145,7 @@ public class Working {
         generateAssortmentItems(invoiceTable);
 
 //        generate product description
-        generateProductDescription(invoiceTable);
+         generateProductDescription(invoiceTable);
 
 //          generate item row
         generateItem(invoiceTable);
@@ -167,26 +168,24 @@ public class Working {
 //        total unit, weight, pack price,amount in USD, VNDR PACK type,
 //        net vndr pack, net total, gross vndr pack, gross total
 
-        createRowForItemInInvoiceTable(EMPTY_BLOCK_TXT, builder.toString(), EMPTY_BLOCK_TXT, "14",
-                "42", "588", EMPTY_BLOCK_TXT, "83.9322", "49352.1336",
-                EMPTY_BLOCK_TXT, "210.0000", "8820.0000", EMPTY_BLOCK_TXT,
-                EMPTY_BLOCK_TXT, invoiceTable);
+        createRowForItemInInvoiceTable(EMPTY_BLOCK_TXT, builder.toString(),  "14",
+                "42", "588",  "83.9322", "49352.1336",
+                 "210.0000", "8820.0000",
+                 invoiceTable);
 
         builder.setLength(0);
         builder.append("ITEM DESCRIPTION: ").append("15PC HARD ANODIZED COOKEWARE SET").append(System.lineSeparator());
         builder.append(TAB).append("  COMPONENT DETAILS: ").append(System.lineSeparator());
 
-
         createExpandingRowForInvoiceTable(EMPTY_BLOCK_TXT, builder.toString(), EMPTY_BLOCK_TXT,
-                EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
-                EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
-                EMPTY_BLOCK_TXT, invoiceTable);
+                EMPTY_BLOCK_TXT,  EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
+                EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,  invoiceTable);
 
 //         clear builder to reuse
         builder.setLength(0);
 
 //        build the Common Name
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 5; i++) {
 
             builder.append(TAB).append("   COMMON NAME: ").append("2QT COVERED SAUCE PAN").append(System.lineSeparator());
             builder.append(TAB).append(TAB).append("    BREAKDOWN:").append(System.lineSeparator());
@@ -196,10 +195,11 @@ public class Working {
             builder.append(TAB).append("   VALUE: ").append("7.8391").append(System.lineSeparator())
                    .append(System.lineSeparator()).append(System.lineSeparator());
 
+            //     5 , 10, 12 ,13 , 14
             createExpandingRowForInvoiceTable(EMPTY_BLOCK_TXT, builder.toString(), EMPTY_BLOCK_TXT,
-                    EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
-                    EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
-                    EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, invoiceTable);
+                    EMPTY_BLOCK_TXT,  EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
+                    EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,  EMPTY_BLOCK_TXT,
+                    invoiceTable);
 
         }
 
@@ -212,10 +212,10 @@ public class Working {
                .append(System.lineSeparator())
                .append(System.lineSeparator());
 
+
         createExpandingRowForInvoiceTable(EMPTY_BLOCK_TXT, builder.toString(), EMPTY_BLOCK_TXT,
-                EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
-                EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
-                EMPTY_BLOCK_TXT, invoiceTable);
+                EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
+                EMPTY_BLOCK_TXT,  EMPTY_BLOCK_TXT,  invoiceTable);
 
     }
 
@@ -230,15 +230,18 @@ public class Working {
 //                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
 //                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
 
-        createExpandingRowForInvoiceTable(EMPTY_BLOCK_TXT, builder.toString(), EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, invoiceTable);
+//     5 , 10, 12 ,13 , 14
+        createExpandingRowForInvoiceTable(EMPTY_BLOCK_TXT, builder.toString(), EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
+                 EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
+                 EMPTY_BLOCK_TXT, invoiceTable);
 
     }
 
+
     private static void createExpandingRowForInvoiceTable(String shippingMarks, String assortment, String whsepack,
-                                                          String vndrPack, String totalVNDRPack, String totalUnit,
+                                                          String vndrPack,  String totalUnit,
                                                           String weight, String packPrice, String amountInUSD,
-                                                          String vndrPackType, String netVNDRPack, String netTotal,
-                                                          String grossVndrPack, String grossTotal, Table invoiceTable
+                                                           String netVNDRPack, Table invoiceTable
     ) {
 
         Cell[] row = new Cell[14];
@@ -259,9 +262,10 @@ public class Working {
         }
     }
 
+//    7,
     private static void createRowForAssortmentInvoiceTable(String shippingMarks, String assortment, String whsepack,
                                                            String vndrPack, String totalVNDRPack, String totalUnit,
-                                                           String weight, String packPrice, String amountInUSD,
+                                                           String packPrice, String amountInUSD,
                                                            String vndrPackType, String netVNDRPack, String netTotal,
                                                            String grossVndrPack, String grossTotal, Table invoiceTable
     ) {
@@ -296,7 +300,7 @@ public class Working {
         assortmentBuilder.append("COUNTRY ORIGIN: ").append("CHINA").append(System.lineSeparator());
 
         createRowForAssortmentInvoiceTable(EMPTY_BLOCK_TXT, assortmentBuilder.toString(), "1", "14", "42",
-                "588", EMPTY_BLOCK_TXT, "1175.0508", "49352.1336", "PALLET(S)",
+                "588", "1175.0508", "49352.1336", "PALLET(S)",
                 "210.0000", "8820.0000", "238.3500", "10010.7000", invoiceTable);
 
     }
@@ -324,18 +328,18 @@ public class Working {
         row[12] = addCellForInvoice(1,1 , grossVndrPack); // gross vndr pack
         row[13] = addCellForInvoice(1,1 , grossTotal); // gross total
 
-        for(Cell cell: row) {
-            if(cell != null) {
-                invoiceTable.addCell(cell);
+            for(Cell cell: row) {
+                if(cell != null) {
+                    invoiceTable.addCell(cell);
+                }
             }
-        }
     }
 
-    private static void createRowForItemInInvoiceTable(String shippingMarks, String assortment, String whsepack,
+    private static void createRowForItemInInvoiceTable(String shippingMarks, String assortment,
                                                        String vndrPack, String totalVNDRPack, String totalUnit,
-                                                       String weight, String packPrice, String amountInUSD,
-                                                       String vndrPackType, String netVNDRPack, String netTotal,
-                                                       String grossVndrPack, String grossTotal, Table invoiceTable
+                                                       String packPrice, String amountInUSD,
+                                                       String netVNDRPack, String netTotal,
+                                                       Table invoiceTable
     ) {
 
         Cell[] row = new Cell[14];
@@ -358,11 +362,12 @@ public class Working {
         }
     }
 
+
     private static void createRowForInvoiceTotal(String shippingMarks, String assortment, String whsepack,
                                                  String vndrPack, String totalVNDRPack, String totalUnit,
-                                                 String weight, String packPrice, String amountInUSD,
-                                                 String vndrPackType, String netVNDRPack, String netTotal,
-                                                 String grossVndrPack, String grossTotal, Table invoiceTable
+                                                 String packPrice, String amountInUSD,
+                                                 String netVNDRPack, String netTotal,
+                                                 String grossTotal, Table invoiceTable
     ) {
 
         Cell[] row = new Cell[14];
@@ -749,6 +754,7 @@ public class Working {
     private static void updatePageHeaders(HeaderEventHandler headerEventHandler, String sourcePdfPath ,
                                           String targetPdfPath) throws IOException {
 
+        System.out.println("re-opening the docs after saving ==========");
         PdfReader reader = new PdfReader(sourcePdfPath);
         PdfWriter finalWriter = new PdfWriter(targetPdfPath);
         PdfDocument updatedPdf = new PdfDocument(reader, finalWriter);

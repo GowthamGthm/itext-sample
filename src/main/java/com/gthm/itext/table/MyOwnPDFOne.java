@@ -1,18 +1,13 @@
-package com.gthm.itext.usefulUtils;
+package com.gthm.itext.table;
 
-import com.gthm.itext.events.HeaderEventHandler;
-import com.gthm.itext.model.dummy.InvoiceContents;
+import com.gthm.itext.util.TableUtil;
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.colors.ColorConstants;
-import com.itextpdf.kernel.events.PdfDocumentEvent;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
-import com.itextpdf.kernel.pdf.PdfPage;
-import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.kernel.pdf.canvas.draw.SolidLine;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
@@ -24,45 +19,78 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-public class MyOwnPDFShipperDetails {
+public class MyOwnPDFOne {
 
-    static String directory = "C:\\Users\\anon\\Pictures\\output-invoide\\";
-    private static String PATH = directory + "my-own.pdf";
-
+    private static String PATH = "C:\\Users\\anon\\Pictures\\output-invoide\\my-own.pdf";
 
     public static void main(String[] args) {
 
-        try (PdfWriter writer = new PdfWriter(PATH);
-             PdfDocument pdfDoc = new PdfDocument(writer);
-             Document document = new Document(pdfDoc)) {
+        try (PdfWriter writer = new PdfWriter(PATH); PdfDocument pdfDoc = new PdfDocument(writer); Document document = new Document(pdfDoc)) {
             document.setMargins(36, 20, 36, 20);
             pdfDoc.setDefaultPageSize(PageSize.A4.rotate());
 
-            HeaderEventHandler headerEventHandler = new HeaderEventHandler("WALMART INC",
-                    "355670", "10/06/2024");
-            pdfDoc.addEventHandler(PdfDocumentEvent.END_PAGE, headerEventHandler);
+            Paragraph title = new Paragraph("MASTER GROUP GLOBAL CO., LIMITED").setFontSize(18)
+                                                                               .setBold()
+                                                                               .setTextAlignment(TextAlignment.CENTER)
+                                                                               .setMarginTop(0);
+            document.add(title);
 
 
-//             starting to construct the PDF
-            generateAddress(document);
-            generatePackingList(pdfDoc, document);
-            generateOtherInformation(document);
-            Table invoiceTable = generateInvoiceTableHeader(document);
-//            document.add(invoiceTable);
-            generateTheDataInInvoiceTable(document, invoiceTable);
+            Paragraph titleAddress = new Paragraph("UNIT 2003,20/F,ORIENT INTERNATIONAL TOWER,1018 TAI NAN WEST STREET,CHEUNG SHA WAN").setFontSize(12)
+                                                                                                                                       .setTextAlignment(TextAlignment.CENTER)
+                                                                                                                                       .setMarginTop(0);
+            document.add(titleAddress);
+
+            Paragraph telephone = new Paragraph().setMarginTop(0)
+                                                 .setFontSize(12)
+                                                 .setTextAlignment(TextAlignment.CENTER)
+                                                 .add("TEL:")
+                                                 .add("(852)2312 0409")
+                                                 .add(",")
+                                                 .add("FAX:")
+                                                 .add("(852)2312 0484");
+
+            document.add(telephone);
+            LineSeparator lineSeparator = new LineSeparator(new SolidLine());
+            lineSeparator.setMarginTop(1);
+            lineSeparator.setMarginLeft(20);
+            lineSeparator.setMarginRight(20);
+            lineSeparator.setStrokeColor(ColorConstants.BLACK);
+            lineSeparator.setStrokeWidth(0);
+            document.add(lineSeparator);
 
 
-            // close the document
-            document.close();
+//         second part
 
-//             start generating the page number
-            String outputFilePath =  directory + File.separator + "my-own-page-num.pdf";
-            updateHeaders(headerEventHandler, PATH, outputFilePath);
+            Paragraph packagingList = new Paragraph("COMMERCIAL INVOICE AND PACKING LIST").setFontSize(15)
+                                                                                          .setTextAlignment(TextAlignment.CENTER)
+                                                                                          .setMarginTop(5);
+            document.add(packagingList);
+
+//            TODO:  give the correct x and y axis
+            addPageNumber(pdfDoc, document);
+
+            generateSecondPart(pdfDoc, document);
+
+            Paragraph shipperParagraph = new Paragraph("SHIPPER:").setFontSize(9)
+                                                                  .setMarginLeft(20)
+                                                                  .setMarginTop(0);
+            Paragraph exporter = new Paragraph("EXPORTER:").setFontSize(9)
+                                                           .setMarginLeft(20)
+                                                           .setMarginTop(0);
+            Paragraph otherInformation = new Paragraph("OTHER INFORMATION:").setFontSize(9)
+                                                                            .setMarginLeft(20)
+                                                                            .setMarginTop(0);
+
+            document.add(shipperParagraph);
+            document.add(exporter);
+            document.add(otherInformation);
+
+            Table invoiceTable = generateInvoiceTable();
+            document.add(invoiceTable);
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,182 +99,77 @@ public class MyOwnPDFShipperDetails {
 
     }
 
-    private static void generateTheDataInInvoiceTable(Document document, Table invoiceTable) {
+    private static Table generateInvoiceTable() throws IOException {
 
-        List<InvoiceContents> invoiceContentsList = InvoiceContents.getDummyData();
-        List<Cell[]> rowsForShippingMarks = new ArrayList<>();
+        float[] columnWidths = {100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100};
+        Table table = new Table(columnWidths);
+        table.setWidth(UnitValue.createPercentValue(100));
+        table.setMarginLeft(20);
+        table.setMarginRight(20);
 
-//         generate shippingMarks
-        Cell[] row = new Cell[14];
-        row[0] = addCellForInvoice(2,2 , "ABCD"); // shipping marks
-        row[1] = addCellForInvoice(2,3 , "ABCD"); // assortment
-        row[2] = addCellForInvoice(2,1 , "ABCD"); // WHSE pack
-        row[3] = addCellForInvoice(2,1 , "ABCD"); // VNDR pack
-
-        row[4] = addCellForInvoice(1,1 , "ABCD"); // total VNDR packs
-        row[5] = addCellForInvoice(2,1 , "ABCD"); // total unit
-
-        row[6] = addCellForInvoice(1,4 , "ABCD"); // weight
-        row[7] = addCellForInvoice(2,1 , "ABCD"); // pack price
-        row[8] = addCellForInvoice(2,2 , "ABCD"); // amount in USD
-
-        row[9] = addCellForInvoice(1,1 , "ABCD");  // VNDR PACK type
-        row[10] = addCellForInvoice(1,1, "ABCD"); // net vndr pack
-        row[11] = addCellForInvoice(1,1 , "ABCD"); // net total
-        row[12] = addCellForInvoice(1,1 , "ABCD"); // gross vndr pack
-        row[13] = addCellForInvoice(1,1 , "ABCD"); // gross total
-
-
-        rowsForShippingMarks.add(row);
-
-
-        // add shipping mark rows to table
-        for(Cell[] oneRow : rowsForShippingMarks) {
-            for(Cell cell: oneRow) {
-                if(cell != null) {
-                    invoiceTable.addCell(cell);
-                }
-            }
-        }
-//        Table invoiceTable1 = TableUtil.removeBorder(invoiceTable);
-        document.add(invoiceTable);
-
-    }
-
-    private static Cell addCellForInvoice(int rowSpan, int colSpan, String content) {
-        return new Cell(rowSpan, colSpan).add(new Paragraph(content).setFontSize(9));
-    }
-
-    private static void generateAddress(Document document) {
-        Paragraph title = new Paragraph("MASTER GROUP GLOBAL CO., LIMITED").setFontSize(18)
-                                                                           .setBold()
-                                                                           .setTextAlignment(TextAlignment.CENTER)
-                                                                           .setMarginTop(0);
-        document.add(title);
-
-
-        Paragraph titleAddress = new Paragraph("UNIT 2003,20/F,ORIENT INTERNATIONAL TOWER,1018 TAI NAN WEST STREET,CHEUNG SHA WAN").setFontSize(12)
-                                                                                                                                   .setTextAlignment(TextAlignment.CENTER)
-                                                                                                                                   .setMarginTop(0);
-        document.add(titleAddress);
-
-        Paragraph telephone = new Paragraph().setMarginTop(0)
-                                             .setFontSize(12)
-                                             .setTextAlignment(TextAlignment.CENTER)
-                                             .add("TEL:")
-                                             .add("(852)2312 0409")
-                                             .add(",")
-                                             .add("FAX:")
-                                             .add("(852)2312 0484");
-
-        document.add(telephone);
-        LineSeparator lineSeparator = new LineSeparator(new SolidLine());
-        lineSeparator.setMarginTop(1);
-        lineSeparator.setMarginLeft(20);
-        lineSeparator.setMarginRight(20);
-        lineSeparator.setStrokeColor(ColorConstants.BLACK);
-        lineSeparator.setStrokeWidth(0);
-        document.add(lineSeparator);
-
-    }
-
-    private static void generateOtherInformation(Document document) {
-        Paragraph shipperParagraph = new Paragraph("SHIPPER:").setFontSize(9)
-                                                              .setMarginLeft(20)
-                                                              .setMarginTop(0);
-        Paragraph exporter = new Paragraph("EXPORTER:").setFontSize(9)
-                                                       .setMarginLeft(20)
-                                                       .setMarginTop(0);
-        Paragraph otherInformation = new Paragraph("OTHER INFORMATION:").setFontSize(9)
-                                                                        .setMarginLeft(20)
-                                                                        .setMarginTop(0);
-
-        document.add(shipperParagraph);
-        document.add(exporter);
-        document.add(otherInformation);
-    }
-
-    private static Table generateInvoiceTableHeader(Document document) throws IOException {
-
-        float[] columnWidths = { 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 , 100};
-
-//        Table invoiceTableHeader = new Table(15);
-        Table invoiceTableHeader = new Table(columnWidths);
-        invoiceTableHeader.setWidth(UnitValue.createPercentValue(100));
-        invoiceTableHeader.setMarginLeft(20);
-        invoiceTableHeader.setMarginRight(20);
-
-        invoiceTableHeader.addCell(new Cell(2, 2).add(TableUtil.getTableHeader("SHIPPING MARKS, PO#,\n PO Type & Dept#")))
+        table.addCell(new Cell(2, 2).add(TableUtil.getTableHeader("SHIPPING MARKS, PO#,\n PO Type & Dept#")))
              .setVerticalAlignment(VerticalAlignment.MIDDLE)
              .setTextAlignment(TextAlignment.CENTER);
 
-        invoiceTableHeader.addCell(new Cell(2, 3).add(TableUtil.getTableHeader("ASSORTMENT/ITEM #, \n COMMERCIAL BRAND & \n DETAILED DESCRIPTION " + "\n AS PER PO")))
+        table.addCell(new Cell(2, 3).add(TableUtil.getTableHeader("ASSORTMENT/ITEM #, \n COMMERCIAL BRAND & \n DETAILED DESCRIPTION " + "\n AS PER PO")))
              .setVerticalAlignment(VerticalAlignment.MIDDLE)
              .setTextAlignment(TextAlignment.CENTER);
 
-        invoiceTableHeader.addCell(new Cell(2, 1).add(TableUtil.getTableHeader("WHSE PACK \n (PCS)")))
+        table.addCell(new Cell(2, 1).add(TableUtil.getTableHeader("WHSE PACK \n (PCS)")))
              .setVerticalAlignment(VerticalAlignment.MIDDLE)
              .setTextAlignment(TextAlignment.CENTER);
 
-        invoiceTableHeader.addCell(new Cell(2, 1).add(TableUtil.getTableHeader("VNDR PACK \n (PCS)")))
+        table.addCell(new Cell(2, 1).add(TableUtil.getTableHeader("VNDR PACK \n (PCS)")))
              .setVerticalAlignment(VerticalAlignment.MIDDLE)
              .setTextAlignment(TextAlignment.CENTER);
 
         // 5th row
-        invoiceTableHeader.addCell(new Cell(1, 1).add(TableUtil.getTableHeader("TOTAL VNDR PACKS")))
+        table.addCell(new Cell(0, 0).add(TableUtil.getTableHeader("TOTAL VNDR PACKS")))
              .setVerticalAlignment(VerticalAlignment.MIDDLE)
              .setTextAlignment(TextAlignment.CENTER);
 
-        invoiceTableHeader.addCell(new Cell(2, 1).add(TableUtil.getTableHeader("TOTAL UNITS")))
+        table.addCell(new Cell(2, 0).add(TableUtil.getTableHeader("TOTAL UNITS")))
              .setVerticalAlignment(VerticalAlignment.MIDDLE)
              .setTextAlignment(TextAlignment.CENTER);
 
         // 7th row
-        invoiceTableHeader.addCell(new Cell(1, 4).add(TableUtil.getTableHeader("WEIGHT (KG)")))
+        table.addCell(new Cell(0, 4).add(TableUtil.getTableHeader("WEIGHT (KG)")))
              .setVerticalAlignment(VerticalAlignment.MIDDLE)
              .setTextAlignment(TextAlignment.CENTER);
 
-        invoiceTableHeader.addCell(new Cell(2, 1).add(TableUtil.getTableHeader("PACK PRICE \n (USD)")))
+        table.addCell(new Cell(2, 0).add(TableUtil.getTableHeader("PACK PRICE \n (USD)")))
              .setVerticalAlignment(VerticalAlignment.MIDDLE)
              .setTextAlignment(TextAlignment.CENTER);
 
-        invoiceTableHeader.addCell(new Cell(2, 1).add(TableUtil.getTableHeader("AMOUNT IN \n USD")))
+        table.addCell(new Cell(2, 0).add(TableUtil.getTableHeader("AMOUNT IN \n USD")))
              .setVerticalAlignment(VerticalAlignment.MIDDLE)
              .setTextAlignment(TextAlignment.CENTER);
 
 //         bottom ones
-        invoiceTableHeader.addCell(new Cell(1, 1).add(TableUtil.getTableHeader("VNDR PACK TYPE")))
+        table.addCell(new Cell(0, 0).add(TableUtil.getTableHeader("VNDR PACK TYPE")))
              .setVerticalAlignment(VerticalAlignment.MIDDLE)
              .setTextAlignment(TextAlignment.CENTER);
 
-        invoiceTableHeader.addCell(new Cell(1, 1).add(TableUtil.getTableHeader("NET VNDR \n PACK")))
+        table.addCell(new Cell(0, 0).add(TableUtil.getTableHeader("NET VNDR \n PACK")))
              .setVerticalAlignment(VerticalAlignment.MIDDLE)
              .setTextAlignment(TextAlignment.CENTER);
 
-        invoiceTableHeader.addCell(new Cell(1, 1).add(TableUtil.getTableHeader("NET TOTAL")))
+        table.addCell(new Cell(0, 0).add(TableUtil.getTableHeader("NET TOTAL")))
              .setVerticalAlignment(VerticalAlignment.MIDDLE)
              .setTextAlignment(TextAlignment.CENTER);
 
-        invoiceTableHeader.addCell(new Cell(1, 1).add(TableUtil.getTableHeader("GROSS VNDR PACK")))
+        table.addCell(new Cell(0, 0).add(TableUtil.getTableHeader("GROSS VNDR PACK")))
              .setVerticalAlignment(VerticalAlignment.MIDDLE)
              .setTextAlignment(TextAlignment.CENTER);
 
-        invoiceTableHeader.addCell(new Cell(1, 1).add(TableUtil.getTableHeader("GROSS TOTAL")))
+        table.addCell(new Cell(0, 0).add(TableUtil.getTableHeader("GROSS TOTAL")))
              .setVerticalAlignment(VerticalAlignment.MIDDLE)
              .setTextAlignment(TextAlignment.CENTER);
 
-//        document.add(invoiceTableHeader);
-        return invoiceTableHeader;
+        return table;
     }
 
-    private static void generatePackingList(PdfDocument pdfDoc, Document document) throws IOException {
-
-        Paragraph packagingList = new Paragraph("COMMERCIAL INVOICE AND PACKING LIST").setFontSize(15)
-                                                                                      .setTextAlignment(TextAlignment.CENTER)
-                                                                                      .setMarginTop(5);
-        document.add(packagingList);
-
-
+    private static void generateSecondPart(PdfDocument pdfDoc, Document document) throws IOException {
         // Create a table with 2 columns
         PdfFont font = PdfFontFactory.createFont(StandardFonts.HELVETICA);
         Table table = new Table(UnitValue.createPercentArray(new float[]{2, 4, 4}));
@@ -432,23 +355,11 @@ public class MyOwnPDFShipperDetails {
     }
 
 
-    private static void updateHeaders(HeaderEventHandler headerEventHandler, String sourcePdfPath , String targetPdfPath) throws IOException {
-
-        PdfReader reader = new PdfReader(sourcePdfPath);
-        PdfWriter finalWriter = new PdfWriter(targetPdfPath);
-        PdfDocument updatedPdf = new PdfDocument(reader, finalWriter);
-
-        int totalPageCount = updatedPdf.getNumberOfPages();
-
-        // Update the header on each page
-        for (int pageNumber = 1; pageNumber <= totalPageCount; pageNumber++) {
-            PdfPage page = updatedPdf.getPage(pageNumber);
-            PdfCanvas canvas = new PdfCanvas(page);
-            headerEventHandler.updatePageHeaders(page, pageNumber, totalPageCount);
+    public static void addPageNumber(PdfDocument pdfDoc, Document document) throws IOException {
+        int numberOfPages = pdfDoc.getNumberOfPages();
+        for (int i = 1; i <= numberOfPages; i++) {
+            document.showTextAligned(new Paragraph(String.format("PAGE %s of %s", i, numberOfPages)), 800, 50, i, TextAlignment.RIGHT, VerticalAlignment.TOP, 0);
         }
-
-        updatedPdf.close();
-
     }
 
 }

@@ -1,6 +1,6 @@
-package com.gthm.itext.util;
+package com.gthm.itext.table;
 
-import com.gthm.itext.usefulUtils.TableUtil;
+import com.gthm.itext.util.TableUtil;
 import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;

@@ -52,6 +52,8 @@ public class HeaderEventHandler implements IEventHandler {
             return;
         }
 
+        System.out.println("===================== processing the headers for the pageNumber: " + pageNumber);
+
         PdfCanvas pdfCanvas = new PdfCanvas(page);
         Rectangle pageSize = page.getPageSize();
 

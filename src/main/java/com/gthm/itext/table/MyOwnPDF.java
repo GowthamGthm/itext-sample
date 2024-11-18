@@ -1,7 +1,8 @@
-package com.gthm.itext.usefulUtils;
+package com.gthm.itext.table;
 
 import com.gthm.itext.events.HeaderEventHandler;
 import com.gthm.itext.model.dummy.InvoiceContents;
+import com.gthm.itext.util.TableUtil;
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.events.PdfDocumentEvent;
@@ -17,7 +18,6 @@ import com.itextpdf.kernel.pdf.canvas.draw.SolidLine;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.*;
-import com.itextpdf.layout.properties.TabAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;

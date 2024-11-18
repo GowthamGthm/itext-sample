@@ -1,4 +1,4 @@
-package com.gthm.itext.usefulUtils;
+package com.gthm.itext.util;
 
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.font.PdfFont;

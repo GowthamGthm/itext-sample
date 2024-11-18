@@ -1,4 +1,4 @@
-package com.gthm.itext.usefulUtils;
+package com.gthm.itext.util;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
