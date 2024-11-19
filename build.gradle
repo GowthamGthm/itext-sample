@@ -26,9 +26,11 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    implementation 'com.itextpdf:itext-core:8.0.5'
+//    implementation 'com.itextpdf:itext-core:8.0.5'
     implementation 'org.apache.commons:commons-lang3:3.17.0'
     implementation 'commons-io:commons-io:2.17.0'
+
+    implementation 'com.lowagie:itext:4.2.2'
 
 
 }
