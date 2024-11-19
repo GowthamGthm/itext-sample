@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class PdfHeaderWithPageNumber {
 
-    public static void manipulatePdf(String src, String dest) throws IOException, DocumentException {
+    public static void manipulatePdf(String src, String dest,String soldTo, String invoiceNumber, String soldDate) throws IOException, DocumentException {
 
         try {
             PdfReader reader = new PdfReader(new FileInputStream(src));
@@ -18,7 +18,10 @@ public class PdfHeaderWithPageNumber {
 
             for (int i = 1; i <= totalPages; i++) {
                 PdfContentByte overContent = stamper.getOverContent(i);
-                addHeader(overContent, i, totalPages);
+
+                if( i != 1) {
+                    addHeader(overContent, i, totalPages , soldTo , invoiceNumber, soldDate);
+                }
             }
 
             stamper.close();
@@ -30,7 +33,8 @@ public class PdfHeaderWithPageNumber {
         }
     }
 
-    private static void addHeader(PdfContentByte canvas, int pageNumber, int totalPages) {
+    private static void addHeader(PdfContentByte canvas, int pageNumber, int totalPages, String soldTo,
+                                  String invoiceNumber, String soldDate) {
         try {
             // Load the font
             BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1252, false);
@@ -41,7 +45,6 @@ public class PdfHeaderWithPageNumber {
             float pageWidth = PageSize.A4.getHeight(); // A4 Landscape width
             float yPosition = PageSize.A4.getWidth() - 20; // 20 units from top in landscape mode
 
-            // Define column positions
             float x1 = 20;  // "Sold to:" position
             float x2 = pageWidth / 4;  // Invoice number position
             float x3 = pageWidth / 2;  // Date position
@@ -49,20 +52,21 @@ public class PdfHeaderWithPageNumber {
 
             // Add header content
             canvas.setTextMatrix(x1, yPosition);
-            canvas.showText("Sold to:");
+            canvas.showText("SOLD TO: " + soldTo);
 
             canvas.setTextMatrix(x2, yPosition);
-            canvas.showText("Invoice No.: 12345");
+            canvas.showText("INVOICE # " + invoiceNumber);
 
             canvas.setTextMatrix(x3, yPosition);
-            canvas.showText("Date: 2024-11-19");
+            canvas.showText("DATE: " + soldDate);
 
             canvas.setTextMatrix(x4, yPosition);
-            canvas.showText("PAGE " + pageNumber + " of " + totalPages);
+            canvas.showText("PAGE " + pageNumber + " OF " + totalPages);
 
             canvas.endText();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 }

@@ -2,13 +2,16 @@ package com.gthm.itext.lowagie.table;
 
 import com.gthm.itext.events.PdfHeaderWithPageNumber;
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.*;
-import com.itextpdf.text.pdf.draw.LineSeparator;
-
+import com.itextpdf.text.pdf.PdfDocument;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import static com.gthm.itext.lowagie.table.LowagieUtil.*;
 
 public class LovagieInvoicePDF {
 
@@ -23,7 +26,7 @@ public class LovagieInvoicePDF {
     static Font FONT_SIZE_9 = new Font(Font.FontFamily.HELVETICA, 9);
     static Font FONT_SIZE_8 = new Font(Font.FontFamily.HELVETICA, 8);
     static Font HELVETICA_SIZE_10 = new Font(Font.FontFamily.HELVETICA, 10);
-    static Font HELVETICA_SIZE_8_BOLD = new Font(Font.FontFamily.HELVETICA, 8);
+    static Font HELVETICA_SIZE_8_BOLD = new Font(Font.FontFamily.HELVETICA, 8, Font.BOLD);
     static Font HELVETICA_FONT_SIZE_5 = new Font(Font.FontFamily.HELVETICA, 5);
     static Font HELVETICA_FONT_SIZE_15 = new Font(Font.FontFamily.HELVETICA , 15);
 
@@ -38,22 +41,14 @@ public class LovagieInvoicePDF {
 
             document.open();
             document.setMargins(36, 20, 36, 20);
-//            pdfDoc.setPageSize(PageSize.A4.rotate());
-//            pdfDoc.setDefaultPageSize(PageSize.A4.rotate());
-
-            HeaderEventHandler headerEventHandler = new HeaderEventHandler("WALMART INC",
-                    "355670", "10/06/2024");
-//            pdfDoc.addEventHandler(PdfDocumentEvent.END_PAGE, headerEventHandler);
-            // Set the page event handler
-//            writer.setPageEvent(headerEventHandler);
 
 
-//             starting to construct the PDF
+
+//          starting to construct the PDF
             generateAddress(document);
             generatePackingList(pdfDoc, document);
             generateOtherInformation(document);
             PdfPTable invoiceTable = generateInvoiceTableHeader(document);
-//            document.add(invoiceTable);
             generateTheDataInInvoiceTable(document, invoiceTable);
 
 //            generate total in words
@@ -69,24 +64,46 @@ public class LovagieInvoicePDF {
 
 //            generateUnder line and extra Stuff
             generateUnderLineAndExtraStuff(document);
-
-
-
             // close the document
             document.close();
 
-//             start generating the page number
+//          start generating the page number
             String outputFilePath =  directory + File.separator + "my-own-page-num.pdf";
-            PdfHeaderWithPageNumber.manipulatePdf(PATH , outputFilePath);
-
-//            updatePageHeaders(headerEventHandler, PATH, outputFilePath);
+            PdfHeaderWithPageNumber.manipulatePdf(PATH , outputFilePath, "WALMART INC",
+                    "355670", "10/06/2024");
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+    private static void generateAddress(Document document) throws DocumentException {
+        Paragraph title = LowagieUtil.createParagraph("MASTER GROUP GLOBAL CO., LIMITED" ,
+                HELVETICA_SIZE_8_BOLD , Element.ALIGN_CENTER,
+                null);
+        document.add(title);
+
+        Paragraph titleAddress = LowagieUtil.createParagraph("UNIT 2003,20/F,ORIENT INTERNATIONAL TOWER,1018 TAI NAN WEST STREET,CHEUNG SHA WAN",
+                HELVETICA_SIZE_10, Element.ALIGN_CENTER,null);
+
+        document.add(titleAddress);
+
+        StringBuilder telephoneBuilder = new StringBuilder();
+        telephoneBuilder.append("TEL:")
+                        .append("(852)2312 0409")
+                        .append(",")
+                        .append("FAX:")
+                        .append("(852)2312 0484");
+
+        Paragraph telephone = LowagieUtil.createParagraph(telephoneBuilder.toString() , HELVETICA_SIZE_10,
+                Element.ALIGN_LEFT , null);
+
+        document.add(telephone);
+        addUnderLine(document);
 
     }
+
 
     private static void generateUnderLineAndExtraStuff(Document document) throws DocumentException {
         addUnderLine(document);
@@ -100,7 +117,6 @@ public class LovagieInvoicePDF {
         document.add(descriptionPara);
 
         addUnderLine(document);
-
 
 //         signature
         Paragraph namePara = new Paragraph("JANE");
@@ -127,8 +143,6 @@ public class LovagieInvoicePDF {
         createRowForInvoiceTotal("", invoiceTotal, "1", "14", "42",
                 "588",  "83.9322", "49352.13",
                 "210.0000", "8820.0000",  "10010.7000", invoiceTable);
-
-
 
     }
 
@@ -216,6 +230,17 @@ public class LovagieInvoicePDF {
 
     }
 
+    private static void generateShippingMarksRow(String shippingMarks, PdfPTable invoiceTable) {
+
+//        shippingMarks , assortment , WHSE pack ,VNDR pack, total VNDR packs, total unit, weight, pack price,
+//        amount in USD, VNDR PACK type, net vndr pack, net total, gross vndr pack, gross total
+
+        createRowForInvoiceTable(shippingMarks, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
+                EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
+                EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
+                invoiceTable);
+    }
+
     private static void generateProductDescription(PdfPTable invoiceTable) {
         StringBuilder builder = new StringBuilder();
         builder.append("PRODUCT DESCRIPTION: ").append("15PC HARD ANODIZED COOKEWARE SET").append(System.lineSeparator());
@@ -227,37 +252,12 @@ public class LovagieInvoicePDF {
 //                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT,
 //                DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, DUMMY_TEXT, invoiceTable);
 
-//     5 , 10, 12 ,13 , 14
         createExpandingRowForInvoiceTable(EMPTY_BLOCK_TXT, builder.toString(), EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
                  EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
                  EMPTY_BLOCK_TXT, invoiceTable);
 
     }
 
-
-    private static void createExpandingRowForInvoiceTable(String shippingMarks, String assortment, String whsepack,
-                                                          String vndrPack,  String totalUnit,
-                                                          String weight, String packPrice, String amountInUSD,
-                                                           String netVNDRPack, PdfPTable invoiceTable
-    ) {
-
-        PdfPCell[] row = new PdfPCell[14];
-        row[0] = addCellForInvoice(2,3 , shippingMarks); // shipping marks
-        row[1] = addCellForInvoice(2,9 , assortment); // assortment
-        row[2] = addCellForInvoice(2,1 , whsepack); // WHSE pack
-        row[3] = addCellForInvoice(2,1 , vndrPack); // VNDR pack
-        row[4] = addCellForInvoice(2,1 , totalUnit); // total unit
-        row[5] = addCellForInvoice(1,0 , weight); // weight
-        row[6] = addCellForInvoice(2,1 , packPrice); // pack price
-        row[7] = addCellForInvoice(2,2 , amountInUSD); // amount in USD
-        row[8] = addCellForInvoice(1,1, netVNDRPack); // net vndr pack
-
-        for(PdfPCell cell: row) {
-            if(cell != null) {
-                invoiceTable.addCell(cell);
-            }
-        }
-    }
 
 //    7,
     private static void createRowForAssortmentInvoiceTable(String shippingMarks, String assortment, String whsepack,
@@ -302,190 +302,52 @@ public class LovagieInvoicePDF {
 
     }
 
-    private static void createRowForInvoiceTable(String shippingMarks, String assortment, String whsepack,
-                                                 String vndrPack, String totalVNDRPack, String totalUnit,
-                                                 String weight, String packPrice, String amountInUSD,
-                                                 String vndrPackType, String netVNDRPack, String netTotal,
-                                                 String grossVndrPack, String grossTotal, PdfPTable invoiceTable
-    ) {
 
-        PdfPCell[] row = new PdfPCell[14];
-        row[0] = addCellForInvoice(2,3 , shippingMarks); // shipping marks
-        row[1] = addCellForInvoice(2,6 , assortment); // assortment
-        row[2] = addCellForInvoice(2,1 , whsepack); // WHSE pack
-        row[3] = addCellForInvoice(2,1 , vndrPack); // VNDR pack
-        row[4] = addCellForInvoice(1,1 , totalVNDRPack); // total VNDR packs
-        row[5] = addCellForInvoice(2,1 , totalUnit); // total unit
-        row[6] = addCellForInvoice(1,4 , weight); // weight
-        row[7] = addCellForInvoice(2,1 , packPrice); // pack price
-        row[8] = addCellForInvoice(2,2 , amountInUSD); // amount in USD
-        row[9] = addCellForInvoice(1,1 , vndrPackType);  // VNDR PACK type
-        row[10] = addCellForInvoice(1,1, netVNDRPack); // net vndr pack
-        row[11] = addCellForInvoice(1,1 , netTotal); // net total
-        row[12] = addCellForInvoice(1,1 , grossVndrPack); // gross vndr pack
-        row[13] = addCellForInvoice(1,1 , grossTotal); // gross total
+    private static PdfPTable generateInvoiceTableHeader(Document document) throws IOException {
 
-            for(PdfPCell cell: row) {
-                if(cell != null) {
-                    invoiceTable.addCell(cell);
-                }
-            }
-    }
+        float[] columnWidths = { 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 , 100 , 100};
 
-    private static void createRowForItemInInvoiceTable(String shippingMarks, String assortment,
-                                                       String vndrPack, String totalVNDRPack, String totalUnit,
-                                                       String packPrice, String amountInUSD,
-                                                       String netVNDRPack, String netTotal,
-                                                       PdfPTable invoiceTable
-    ) {
+        PdfPTable invoiceTableHeader = new PdfPTable(columnWidths);
+        invoiceTableHeader.setWidthPercentage(100);
 
-        PdfPCell[] row = new PdfPCell[14];
-        row[0] = addCellForInvoice(2,3 , shippingMarks); // shipping marks
-        row[1] = addCellForInvoice(2,7 , assortment); // assortment
-        row[2] = addCellForInvoice(2,1 , vndrPack); // VNDR pack
-        row[3] = addCellForInvoice(2,1 , totalVNDRPack); // total VNDR packs
-        row[4] = addCellForInvoice(2,1 , totalUnit); // total unit
-        row[5] = addCellForInvoice(2,1, netVNDRPack); // net vndr pack
-        row[6] = addCellForInvoice(2,1 , netTotal); // net total
-        row[7] = addCellForInvoice(2,1 , ""); // empty field
-        row[8] = addCellForInvoice(2,1 , ""); // empty field
-        row[9] = addCellForInvoice(2,1 , packPrice); // pack price
-        row[10] = addCellForInvoice(2,1 , amountInUSD); // amount in USD
+        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("SHIPPING MARKS, PO#,\n PO Type & Dept#" , 2 , 3));
 
-        for(PdfPCell cell: row) {
-            if(cell != null) {
-                invoiceTable.addCell(cell);
-            }
-        }
+        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("ASSORTMENT/ITEM #, \n COMMERCIAL BRAND & \n DETAILED DESCRIPTION "
+                + "\n AS PER PO", 2, 6));
+
+        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("WHSE PACK \n (PCS)" , 2 , 1));
+
+        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("VNDR PACK \n (PCS)" , 2 ,1));
+
+        // 5th row
+        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("TOTAL VNDR PACKS" , 1,1));
+//                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
+//                          .setTextAlignment(TextAlignment.CENTER);
+
+        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("TOTAL UNITS" , 2,1));
+
+        // 7th row
+        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("WEIGHT (KG)" , 1, 4));
+
+        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("PACK PRICE \n (USD)" , 2, 1));
+
+        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("AMOUNT IN \n USD" , 2 ,1));
+
+//         bottom ones
+        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("VNDR PACK TYPE" , 1,1));
+
+        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("NET VNDR \n PACK" , 1, 1));
+
+        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("NET TOTAL" , 1,1));
+
+        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("GROSS VNDR PACK" , 1,1));
+
+        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("GROSS TOTAL" , 1,1));
+
+        return invoiceTableHeader;
     }
 
 
-    private static void createRowForInvoiceTotal(String shippingMarks, String assortment, String whsepack,
-                                                 String vndrPack, String totalVNDRPack, String totalUnit,
-                                                 String packPrice, String amountInUSD,
-                                                 String netVNDRPack, String netTotal,
-                                                 String grossTotal, PdfPTable invoiceTable
-    ) {
-
-        PdfPCell[] row = new PdfPCell[14];
-        row[0] = addCellForInvoice(2,3 , shippingMarks); // shipping marks
-        row[1] = addCellForInvoiceTotal(2,6 , assortment); // assortment
-        row[2] = addCellForInvoiceTotalWithBorder(2,1 , whsepack); // WHSE pack
-        row[3] = addCellForInvoiceTotalWithBorder(2,1 , vndrPack); // VNDR pack
-        row[4] = addCellForInvoiceTotalWithBorder(2,1 , totalVNDRPack); // total VNDR packs
-        row[5] = addCellForInvoiceTotalWithBorder(2,1 , totalUnit); // total unit
-        row[6] = addCellForInvoiceTotalWithBorder(2,1, "");
-        row[7] = addCellForInvoiceTotalWithBorder(2,1 , netVNDRPack); // net vndr pack
-        row[8] = addCellForInvoiceTotalWithBorder(2,1 , grossTotal); // gross total
-        row[9] = addCellForInvoiceTotalWithBorder(2,1 , packPrice); // pack price
-        row[10] = addCellForInvoiceTotalWithBorder(2,1 , amountInUSD); // amount in USD
-        row[11] = addCellForInvoiceTotalWithBorder(2,1 , netTotal); // net total
-
-        for(PdfPCell cell: row) {
-            if(cell != null) {
-                invoiceTable.addCell(cell);
-            }
-        }
-    }
-
-    private static void generateShippingMarksRow(String shippingMarks, PdfPTable invoiceTable) {
-
-//        shippingMarks , assortment , WHSE pack ,VNDR pack, total VNDR packs, total unit, weight, pack price,
-//        amount in USD, VNDR PACK type, net vndr pack, net total, gross vndr pack, gross total
-
-        createRowForInvoiceTable(shippingMarks, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
-                EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
-                EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT, EMPTY_BLOCK_TXT,
-                invoiceTable);
-    }
-
-    private static PdfPCell addCellForInvoice(int rowSpan, int colSpan, String content) {
-
-        Paragraph paragraph = LowagieUtil.createParagraph(content, FONT_SIZE_8, null,
-                LowagieMargin.builder().left(5f).build());
-
-        PdfPCell cell = new PdfPCell();
-        cell.setRowspan(rowSpan);
-        cell.setColspan(colSpan);
-        cell.addElement(paragraph);
-        cell.setBorder(Rectangle.NO_BORDER);
-        cell.setVerticalAlignment(Element.ALIGN_LEFT);
-
-        return cell;
-    }
-
-    private static PdfPCell addCellForInvoiceTotalWithBorder(int rowSpan, int colSpan, String content) {
-
-        Paragraph paragraph = LowagieUtil.createParagraph(content, HELVETICA_SIZE_8_BOLD, null,
-                LowagieMargin.builder().left(5f).build());
-
-
-        PdfPCell cell = new PdfPCell();
-        cell.setRowspan(rowSpan);
-        cell.setColspan(colSpan);
-        cell.addElement(paragraph);
-//        cell.setBorder(Rectangle.NO_BORDER);
-        cell.setVerticalAlignment(Element.ALIGN_LEFT);
-        return cell;
-    }
-
-    private static PdfPCell addCellForInvoiceTotal(int rowSpan, int colSpan, String content) {
-        Paragraph paragraph = LowagieUtil.createParagraph(content, FONT_SIZE_8, null,
-                LowagieMargin.builder().left(5f).build());
-
-
-        PdfPCell cell = new PdfPCell();
-        cell.setRowspan(rowSpan);
-        cell.setColspan(colSpan);
-        cell.addElement(paragraph);
-//        cell.setBorder(Rectangle.NO_BORDER);
-        cell.setVerticalAlignment(Element.ALIGN_RIGHT);
-        return cell;
-    }
-
-    private static void generateAddress(Document document) throws DocumentException {
-        Paragraph title = LowagieUtil.createParagraph("MASTER GROUP GLOBAL CO., LIMITED" ,
-                HELVETICA_SIZE_8_BOLD , Element.ALIGN_CENTER,
-                null);
-        document.add(title);
-
-        Paragraph titleAddress = LowagieUtil.createParagraph("UNIT 2003,20/F,ORIENT INTERNATIONAL TOWER,1018 TAI NAN WEST STREET,CHEUNG SHA WAN",
-                HELVETICA_SIZE_10, Element.ALIGN_CENTER,null);
-
-        document.add(titleAddress);
-
-        StringBuilder telephoneBuilder = new StringBuilder();
-        telephoneBuilder.append("TEL:")
-                .append("(852)2312 0409")
-                .append(",")
-                .append("FAX:")
-                .append("(852)2312 0484");
-
-        Paragraph telephone = LowagieUtil.createParagraph(telephoneBuilder.toString() , HELVETICA_SIZE_10,
-                Element.ALIGN_LEFT , null);
-
-        document.add(telephone);
-        addUnderLine(document);
-
-    }
-
-    private static void addUnderLine(Document document) throws DocumentException {
-
-        LineSeparator line = new LineSeparator();
-        line.setLineWidth(1f);
-        line.setLineColor(BaseColor.BLACK);
-
-        Chunk lineChunk = new Chunk(line);
-        lineChunk.setLineHeight(1f);
-
-        Paragraph paragraph = new Paragraph(lineChunk);
-        paragraph.setIndentationLeft(20f);
-        paragraph.setIndentationRight(20f);
-        paragraph.setSpacingBefore(1f);
-
-        document.add(paragraph);
-
-    }
 
     private static void generateOtherInformation(Document document) throws DocumentException {
 
@@ -502,77 +364,7 @@ public class LovagieInvoicePDF {
         document.add(otherInformation);
     }
 
-    private static PdfPTable generateInvoiceTableHeader(Document document) throws IOException {
 
-        float[] columnWidths = { 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 , 100 , 100};
-
-        PdfPTable invoiceTableHeader = new PdfPTable(columnWidths);
-        invoiceTableHeader.setWidthPercentage(100);
-//        invoiceTableHeader.setMarginLeft(20);
-//        invoiceTableHeader.setMarginRight(20);
-
-
-        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("SHIPPING MARKS, PO#,\n PO Type & Dept#" , 2 , 3));
-//                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-//                          .setTextAlignment(TextAlignment.CENTER);
-
-
-        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("ASSORTMENT/ITEM #, \n COMMERCIAL BRAND & \n DETAILED DESCRIPTION "
-                + "\n AS PER PO", 2, 6));
-//                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-//                          .setTextAlignment(TextAlignment.CENTER);
-
-        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("WHSE PACK \n (PCS)" , 2 , 1));
-//                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-//                          .setTextAlignment(TextAlignment.CENTER);
-
-        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("VNDR PACK \n (PCS)" , 2 ,1));
-//                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-//                          .setTextAlignment(TextAlignment.CENTER);
-
-        // 5th row
-        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("TOTAL VNDR PACKS" , 1,1));
-//                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-//                          .setTextAlignment(TextAlignment.CENTER);
-
-        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("TOTAL UNITS" , 2,1));
-//                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-//                          .setTextAlignment(TextAlignment.CENTER);
-
-        // 7th row
-        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("WEIGHT (KG)" , 1, 4));
-//                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-//                          .setTextAlignment(TextAlignment.CENTER);
-
-        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("PACK PRICE \n (USD)" , 2, 1));
-//                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-//                          .setTextAlignment(TextAlignment.CENTER);
-
-        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("AMOUNT IN \n USD" , 2 ,1));
-
-//         bottom ones
-        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("VNDR PACK TYPE" , 1,1));
-//                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-//                          .setTextAlignment(TextAlignment.CENTER);
-
-        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("NET VNDR \n PACK" , 1, 1));
-//                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-//                          .setTextAlignment(TextAlignment.CENTER);
-
-        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("NET TOTAL" , 1,1));
-//                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-//                          .setTextAlignment(TextAlignment.CENTER);
-
-        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("GROSS VNDR PACK" , 1,1));
-//                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-//                          .setTextAlignment(TextAlignment.CENTER);
-
-        invoiceTableHeader.addCell(LowagieUtil.getTableHeader("GROSS TOTAL" , 1,1));
-//                          .setVerticalAlignment(VerticalAlignment.MIDDLE)
-//                          .setTextAlignment(TextAlignment.CENTER);
-
-        return invoiceTableHeader;
-    }
 
     private static void generatePackingList(PdfDocument pdfDoc, Document document) throws IOException, DocumentException {
 
@@ -662,13 +454,10 @@ public class LovagieInvoicePDF {
 
 //  Third Row Paragraph
 
-//        Paragraph thirdParagraph = new Paragraph();
         PdfPTable thirdTable = new PdfPTable(new float[]{1, 1});
         thirdTable.setWidthPercentage(100);
-//        thirdTable.setBorder(Border.NO_BORDER);
 
 //        DATE:
-
         PdfPCell toDate = LowagieUtil.getPdfpCellForFromTO("DATE:");
         thirdTable.addCell(toDate);
 
@@ -737,50 +526,6 @@ public class LovagieInvoicePDF {
         PdfPTable borderLessTable = LowagieUtil.removeBorder(table);
         document.add(borderLessTable);
     }
-
-
-    private static void updatePageHeaders(HeaderEventHandler headerEventHandler, String sourcePdfPath ,
-                                          String targetPdfPath) throws IOException, DocumentException {
-
-        System.out.println("re-opening the docs after saving ==========");
-        // Read the existing PDF
-        PdfReader reader = new PdfReader(sourcePdfPath);
-
-        // Set up the output PDF file and the PdfStamper (for modifying the existing PDF)
-        FileOutputStream fileOutputStream = new FileOutputStream(targetPdfPath);
-        PdfStamper stamper = new PdfStamper(reader, fileOutputStream);
-
-        int totalPageCount = reader.getNumberOfPages();
-        headerEventHandler.setTotalPageCount(totalPageCount);
-
-        // Get the writer instance to set the page event
-        PdfWriter writer = stamper.getWriter();
-
-        // Set the page event (i.e., the header event)
-        writer.setPageEvent(headerEventHandler);
-
-        for (int i = 1; i <= reader.getNumberOfPages(); i++) {
-            headerEventHandler.updatePageHeaders(stamper.getWriter(), i, reader.getNumberOfPages(), reader.getPageSize(i));
-        }
-
-
-        // Update the header on each page
-//        for (int pageNumber = 1; pageNumber <= totalPageCount; pageNumber++) {
-//            PdfPage page = reader.getPage(pageNumber);
-//            headerEventHandler.updatePageHeaders(page, pageNumber, totalPageCount);
-//        }
-
-        stamper.close();
-
-    }
-
-
-
-
-
-
-
-
 
 
 }
