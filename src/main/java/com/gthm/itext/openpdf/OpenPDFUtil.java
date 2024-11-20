@@ -4,6 +4,7 @@ package com.gthm.itext.openpdf;//package com.gthm.itext.lowagie.table;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.Rectangle;
+import com.lowagie.text.alignment.VerticalAlignment;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
@@ -110,13 +111,16 @@ public class OpenPDFUtil {
 
     public static PdfPCell getTableHeader(String name, int row, int col) throws IOException {
 
-        Font font = new Font(Font.HELVETICA, 7, Font.BOLD);
+        Font font = new Font(Font.HELVETICA, 6, Font.BOLD);
         Paragraph paragraph = OpenPDFUtil.createParagraph(name, font, Element.ALIGN_CENTER, null);
 
         PdfPCell pdfPCell = new PdfPCell();
         pdfPCell.addElement(paragraph);
         pdfPCell.setRowspan(row);
         pdfPCell.setColspan(col);
+        pdfPCell.setVerticalAlignment(Element.ALIGN_TOP);
+        pdfPCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+        pdfPCell.setPadding(2);
 
         return pdfPCell;
     }

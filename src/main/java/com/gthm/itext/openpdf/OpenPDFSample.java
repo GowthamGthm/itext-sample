@@ -40,7 +40,7 @@ public class OpenPDFSample {
 
             document.open();
 //            document.setMargins(36, 20, 36, 20);
-            document.setMargins(36, 20, 30, 20);
+            document.setMargins(20, 20, 30, 20);
 
 //          starting to construct the PDF
             generateAddress(document , writer);
@@ -282,6 +282,8 @@ public class OpenPDFSample {
         for(PdfPCell cell: row) {
             if(cell != null) {
                 invoiceTable.addCell(cell);
+//                 TODO: remove this border later
+                cell.setBorder(Rectangle.BOX);
             }
         }
     }
@@ -303,6 +305,9 @@ public class OpenPDFSample {
     private static PdfPTable generateInvoiceTableHeader() throws IOException {
 
         float[] columnWidths = { 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 , 100 , 100};
+
+//        float[] columnWidths = {  100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100 , 100 , 100};
+
 
         PdfPTable invoiceTableHeader = new PdfPTable(columnWidths);
         invoiceTableHeader.setWidthPercentage(100);
@@ -353,19 +358,19 @@ public class OpenPDFSample {
                                            .build();
 
         Paragraph shipperParagraph = OpenPDFUtil.createParagraph("SHIPPER:" , HELVETICA_SIZE_8,
-                null, null);
+                Element.ALIGN_LEFT, null);
         Paragraph exporter =  OpenPDFUtil.createParagraph("EXPORTER:" , HELVETICA_SIZE_8,
-                null, null);
+                Element.ALIGN_LEFT, null);
         Paragraph otherInformation = OpenPDFUtil.createParagraph("OTHER INFORMATION:" , HELVETICA_SIZE_8,
-                null, null);
+                Element.ALIGN_LEFT, null);
 
-        Paragraph paragraph = new Paragraph("");
-        paragraph.setSpacingAfter(10f);
+        Paragraph marginBelow = new Paragraph("");
+        marginBelow.setSpacingAfter(10f);
 
         document.add(shipperParagraph);
         document.add(exporter);
         document.add(otherInformation);
-        document.add(paragraph);
+        document.add(marginBelow);
     }
 
 
