@@ -1,4 +1,4 @@
-package com.gthm.itext.lowagie.table;
+package com.gthm.itext.openpdf;
 
 
 import lombok.AllArgsConstructor;
