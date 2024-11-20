@@ -366,7 +366,7 @@ public class OpenPDFSample {
     private static void generatePackingList(Document document) throws IOException, DocumentException {
 
         Paragraph packagingList = OpenPDFUtil.createParagraph("COMMERCIAL INVOICE AND PACKING LIST" , HELVETICA_SIZE_15,  Element.ALIGN_CENTER ,
-                LowagieMargin.builder().top(5f).build());
+                LowagieMargin.builder().top(0f).bottom(10f).build());
 
         document.add(packagingList);
 
@@ -381,7 +381,7 @@ public class OpenPDFSample {
         StringBuilder builder = new StringBuilder();
         builder.append("SOLD TO:")
                 .append(System.lineSeparator())
-               .append("WALMART INC. \n 508 SW 8TH STREET")
+               .append("WALMART INC. \n508 SW 8TH STREET")
                .append(System.lineSeparator())
                .append("BENTONVILLE")
                .append(System.lineSeparator())
@@ -446,8 +446,12 @@ public class OpenPDFSample {
         PdfPCell fromValue = OpenPDFUtil.getPdfpCellForFromTO("YANTIAN");
         secondTable.addCell(fromValue);
 
-        PdfPCell fromSmaller = OpenPDFUtil.getPdfpCellForFromTO("(PORT/PLACE OF LOADING)", HELVETICA_SIZE_5);
+//         from smaller
+        PdfPCell fromSmaller = OpenPDFUtil.getPdfpCellForFromTOSmaller("(PORT/PLACE OF LOADING)");
         secondTable.addCell(fromSmaller);
+
+        PdfPCell fromSmallerValue = OpenPDFUtil.getPdfpCellForFromTOSmaller("");
+        secondTable.addCell(fromSmallerValue);
 
 //  Third Row Paragraph
 
@@ -458,67 +462,77 @@ public class OpenPDFSample {
         PdfPCell toDate = OpenPDFUtil.getPdfpCellForFromTO("DATE:");
         thirdTable.addCell(toDate);
 
-        PdfPCell toDateValue = new PdfPCell (new Phrase("2024-09-24", HELVETICA_SIZE_9));
+        PdfPCell toDateValue = OpenPDFUtil.getPdfpCellForFromTO("2024-09-24");
         thirdTable.addCell(toDateValue);
 
 
 //        VOYAGE/FLIGHT #
-        PdfPCell voyageFlightNum = new PdfPCell (new Phrase("VOYAGE/FLIGHT #", HELVETICA_SIZE_9));
+        PdfPCell voyageFlightNum = OpenPDFUtil.getPdfpCellForFromTO("VOYAGE/FLIGHT #");
         thirdTable.addCell(voyageFlightNum);
 
 
-        PdfPCell voyageFlightNumValue = new PdfPCell (new Phrase("439W", HELVETICA_SIZE_9));
+        PdfPCell voyageFlightNumValue = OpenPDFUtil.getPdfpCellForFromTO("439W");
         thirdTable.addCell(voyageFlightNumValue);
 
 
 //        TRANSPORT MODE:
-        PdfPCell transPortMode = new PdfPCell ( new Phrase("VOYAGE/FLIGHT #", HELVETICA_SIZE_9));
+        PdfPCell transPortMode = OpenPDFUtil.getPdfpCellForFromTO("VOYAGE/FLIGHT #");
         thirdTable.addCell(transPortMode);
 
-        PdfPCell transPortModeValue =  new PdfPCell( new Phrase("OCEAN", HELVETICA_SIZE_9));
+        PdfPCell transPortModeValue =  OpenPDFUtil.getPdfpCellForFromTO("OCEAN");
         thirdTable.addCell(transPortModeValue);
 
 //        NAMED PLACE:
-        PdfPCell namedPlace =  new PdfPCell( new Phrase("NAMED PLACE:", HELVETICA_SIZE_9));
+        PdfPCell namedPlace =  OpenPDFUtil.getPdfpCellForFromTO("NAMED PLACE:");
         thirdTable.addCell(namedPlace);
 
-        PdfPCell namedPlaceValue = new PdfPCell( new Phrase("YANTIAN", HELVETICA_SIZE_9));
+        PdfPCell namedPlaceValue = OpenPDFUtil.getPdfpCellForFromTO("YANTIAN");
         thirdTable.addCell(namedPlaceValue);
 
 //        COUNTRY OF LOADING:
-        PdfPCell lodingCountry = new PdfPCell( new Phrase("COUNTRY OF LOADING:", HELVETICA_SIZE_9));
+        PdfPCell lodingCountry = OpenPDFUtil.getPdfpCellForFromTO("COUNTRY OF LOADING:");
         thirdTable.addCell(lodingCountry);
 
-        PdfPCell lodingCountryValue = new PdfPCell( new Phrase("CN", HELVETICA_SIZE_9));
+        PdfPCell lodingCountryValue = OpenPDFUtil.getPdfpCellForFromTO("CN");
         thirdTable.addCell(lodingCountryValue);
 
 
 // COUNTRY OF ORIGIN:
-        PdfPCell originCountry = new PdfPCell( new Phrase("COUNTRY OF ORIGIN:", HELVETICA_SIZE_9));
+        PdfPCell originCountry = OpenPDFUtil.getPdfpCellForFromTO("COUNTRY OF ORIGIN:");
         thirdTable.addCell(originCountry);
 
-        PdfPCell originCountryValue = new PdfPCell( new Phrase("CN", HELVETICA_SIZE_9));
+        PdfPCell originCountryValue = OpenPDFUtil.getPdfpCellForFromTO("CN");
         thirdTable.addCell(originCountryValue);
 
 
 //        TO:
-        PdfPCell to = new PdfPCell( new Phrase("TO:", HELVETICA_SIZE_9));
+        PdfPCell to = OpenPDFUtil.getPdfpCellForFromTO("TO:");
         thirdTable.addCell(to);
 
-        PdfPCell toValue = new PdfPCell( new Phrase("CHARLESTON", HELVETICA_SIZE_9));
+        PdfPCell toValue = OpenPDFUtil.getPdfpCellForFromTO("CHARLESTON");
         thirdTable.addCell(toValue);
 
-        PdfPCell toSmaller = new PdfPCell( new Phrase("(FINAL DESTINATION IN THE PO)", HELVETICA_SIZE_9));
+        //        TO Smaller:
+        PdfPCell toSmaller = OpenPDFUtil.getPdfpCellForFromTOSmaller("(FINAL DESTINATION IN THE PO)");
         thirdTable.addCell(toSmaller);
+
+        PdfPCell toSmallerValue = OpenPDFUtil.getPdfpCellForFromTOSmaller("");
+        thirdTable.addCell(toSmallerValue);
+
 
         PdfPCell firstTableCell = new PdfPCell(firstRowParagraph);
         PdfPCell secondTableCell = new PdfPCell(secondTable);
         PdfPCell thirdTableCell = new PdfPCell(thirdTable);
 
+        firstTableCell.setBorder(Rectangle.NO_BORDER);
+        secondTableCell.setBorder(Rectangle.NO_BORDER);
+        thirdTableCell.setBorder(Rectangle.NO_BORDER);
 
         table.addCell(firstTableCell);
         table.addCell(secondTableCell);
         table.addCell(thirdTableCell);
+
+
 
 //        PdfPTable borderLessTable = OpenPDFUtil.removeBorder(table);
         document.add(table);

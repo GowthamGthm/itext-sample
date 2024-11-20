@@ -16,9 +16,8 @@ import java.util.Optional;
 public class OpenPDFUtil {
 
     static Font FONT_SIZE_9 = new Font(Font.HELVETICA, 9);
-
     static Font FONT_SIZE_8 = new Font(Font.HELVETICA, 8);
-
+    static Font FONT_SIZE_5 = new Font(Font.HELVETICA, 5);
     static Font HELVETICA_SIZE_8_BOLD = new Font(Font.HELVETICA, 8, Font.BOLD);
 
 
@@ -61,14 +60,14 @@ public class OpenPDFUtil {
 
     public static PdfPCell getPdfpCellForFromTO(String content) {
         PdfPCell cell = new PdfPCell(new Phrase(Optional.ofNullable(content)
-                                                        .orElse(""), FONT_SIZE_9));
+                                                        .orElse(""), FONT_SIZE_8));
         cell.setBorder(Rectangle.NO_BORDER);
         return cell;
     }
 
-    public static PdfPCell getPdfpCellForFromTO(String content, Font font) {
+    public static PdfPCell getPdfpCellForFromTOSmaller(String content) {
         PdfPCell cell = new PdfPCell(new Phrase(Optional.ofNullable(content)
-                                                        .orElse(""), font));
+                                                        .orElse(""), FONT_SIZE_5));
         cell.setBorder(Rectangle.NO_BORDER);
         return cell;
     }
