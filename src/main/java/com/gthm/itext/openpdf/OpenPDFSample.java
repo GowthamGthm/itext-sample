@@ -20,12 +20,14 @@ public class OpenPDFSample {
         """;
     private static String TAB = "\t";
 
-    static Font FONT_SIZE_9 = new Font(Font.HELVETICA, 9);
-    static Font FONT_SIZE_8 = new Font(Font.HELVETICA, 8);
+    static Font HELVETICA_SIZE_5 = new Font(Font.HELVETICA, 5);
+    static Font HELVETICA_SIZE_9 = new Font(Font.HELVETICA, 9);
+    static Font HELVETICA_SIZE_8 = new Font(Font.HELVETICA, 8);
     static Font HELVETICA_SIZE_10 = new Font(Font.HELVETICA, 10);
+    static Font HELVETICA_SIZE_15 = new Font(Font.HELVETICA , 15);
+
     static Font HELVETICA_SIZE_8_BOLD = new Font(Font.HELVETICA, 8, Font.BOLD);
-    static Font HELVETICA_FONT_SIZE_5 = new Font(Font.HELVETICA, 5);
-    static Font HELVETICA_FONT_SIZE_15 = new Font(Font.HELVETICA , 15);
+    static Font HELVETICA_SIZE_18_BOLD = new Font(Font.HELVETICA, 18, Font.BOLD);
 
     public static void main(String[] args) {
 
@@ -37,10 +39,11 @@ public class OpenPDFSample {
             pdfDoc.addWriter(writer);
 
             document.open();
-            document.setMargins(36, 20, 36, 20);
+//            document.setMargins(36, 20, 36, 20);
+            document.setMargins(36, 20, 30, 20);
 
 //          starting to construct the PDF
-            generateAddress(document);
+            generateAddress(document , writer);
             generatePackingList(document);
             generateOtherInformation(document);
             PdfPTable invoiceTable = generateInvoiceTableHeader();
@@ -51,7 +54,7 @@ public class OpenPDFSample {
                     new Paragraph("INVOICE TOTAL VALUE IN US DOLLARS FORTY-NINE THOUSAND THREE HUNDRED " +
                             "AND FIFTY TWO AND CENTS THIRTEEN");
             totalAmountInWords.setSpacingBefore(15);
-            totalAmountInWords.setFont(FONT_SIZE_9);
+            totalAmountInWords.setFont(HELVETICA_SIZE_9);
             totalAmountInWords.setIndentationLeft(30);
             totalAmountInWords.setAlignment(Element.ALIGN_LEFT);
             totalAmountInWords.setSpacingAfter(20);
@@ -63,7 +66,7 @@ public class OpenPDFSample {
             document.close();
 
 //          start generating the page number
-            String outputFilePath =  directory + File.separator + "my-own-page-num.pdf";
+            String outputFilePath =  directory + File.separator + "open-pdf-page-num.pdf";
             OpenPdfHeaderWithPageNumber.manipulatePdf(PATH , outputFilePath, "WALMART INC",
                     "355670", "10/06/2024");
 
@@ -73,9 +76,9 @@ public class OpenPDFSample {
 
     }
 
-    private static void generateAddress(Document document) throws DocumentException {
+    private static void generateAddress(Document document, PdfWriter writer) throws DocumentException {
         Paragraph title = OpenPDFUtil.createParagraph("MASTER GROUP GLOBAL CO., LIMITED" ,
-                HELVETICA_SIZE_8_BOLD , Element.ALIGN_CENTER,
+                HELVETICA_SIZE_18_BOLD , Element.ALIGN_CENTER,
                 null);
         document.add(title);
 
@@ -92,7 +95,7 @@ public class OpenPDFSample {
                         .append("(852)2312 0484");
 
         Paragraph telephone = OpenPDFUtil.createParagraph(telephoneBuilder.toString() , HELVETICA_SIZE_10,
-                Element.ALIGN_LEFT , null);
+                Element.ALIGN_CENTER , LowagieMargin.builder().bottom(0f).build());
 
         document.add(telephone);
         OpenPDFUtil.addUnderLine(document);
@@ -105,7 +108,7 @@ public class OpenPDFSample {
 
         Paragraph descriptionPara = new
                 Paragraph("DESCRIPTION, ORIGIN, QUANTITY, COST OF ANY FREE SUPPLIED PART(S):");
-        descriptionPara.setFont(FONT_SIZE_8);
+        descriptionPara.setFont(HELVETICA_SIZE_8);
         descriptionPara.setAlignment(Element.ALIGN_LEFT);
         descriptionPara.setIndentationLeft(30);
 
@@ -115,15 +118,14 @@ public class OpenPDFSample {
 
 //         signature
         Paragraph namePara = new Paragraph("JANE");
-        namePara.setFont(FONT_SIZE_8);
+        namePara.setFont(HELVETICA_SIZE_8);
         namePara.setAlignment(Element.ALIGN_LEFT);
         namePara.setSpacingBefore(20);
         namePara.setIndentationLeft(30);
 
         document.add(namePara);
 
-        Paragraph shippingSpecialist = OpenPDFUtil.createParagraph("SHIPPING SPECIALIST",
-                FONT_SIZE_8, Element.ALIGN_LEFT,
+        Paragraph shippingSpecialist = OpenPDFUtil.createParagraph("SHIPPING SPECIALIST", HELVETICA_SIZE_8, Element.ALIGN_LEFT,
                 LowagieMargin.builder().left(30f).build());
 
         document.add(shippingSpecialist);
@@ -350,9 +352,9 @@ public class OpenPDFSample {
                                            .left(20f)
                                            .build();
 
-        Paragraph shipperParagraph = OpenPDFUtil.createParagraph("SHIPPER:" , FONT_SIZE_8 , null, margin);
-        Paragraph exporter =  OpenPDFUtil.createParagraph("EXPORTER:" , FONT_SIZE_8 , null, margin);
-        Paragraph otherInformation = OpenPDFUtil.createParagraph("OTHER INFORMATION:" , FONT_SIZE_8 , null, margin);
+        Paragraph shipperParagraph = OpenPDFUtil.createParagraph("SHIPPER:" , HELVETICA_SIZE_8, null, margin);
+        Paragraph exporter =  OpenPDFUtil.createParagraph("EXPORTER:" , HELVETICA_SIZE_8, null, margin);
+        Paragraph otherInformation = OpenPDFUtil.createParagraph("OTHER INFORMATION:" , HELVETICA_SIZE_8, null, margin);
 
         document.add(shipperParagraph);
         document.add(exporter);
@@ -363,7 +365,7 @@ public class OpenPDFSample {
 
     private static void generatePackingList(Document document) throws IOException, DocumentException {
 
-        Paragraph packagingList = OpenPDFUtil.createParagraph("COMMERCIAL INVOICE AND PACKING LIST" , HELVETICA_FONT_SIZE_15,  Element.ALIGN_CENTER ,
+        Paragraph packagingList = OpenPDFUtil.createParagraph("COMMERCIAL INVOICE AND PACKING LIST" , HELVETICA_SIZE_15,  Element.ALIGN_CENTER ,
                 LowagieMargin.builder().top(5f).build());
 
         document.add(packagingList);
@@ -389,7 +391,7 @@ public class OpenPDFSample {
                .append(System.lineSeparator())
                .append("72716");
 
-        Paragraph firstRowParagraph = OpenPDFUtil.createParagraph(builder.toString(), FONT_SIZE_9,
+        Paragraph firstRowParagraph = OpenPDFUtil.createParagraph(builder.toString(), HELVETICA_SIZE_9,
                 Element.ALIGN_LEFT, null);
 
         PdfPTable secondTable = new PdfPTable(new float[]{1, 1});
@@ -444,7 +446,7 @@ public class OpenPDFSample {
         PdfPCell fromValue = OpenPDFUtil.getPdfpCellForFromTO("YANTIAN");
         secondTable.addCell(fromValue);
 
-        PdfPCell fromSmaller = OpenPDFUtil.getPdfpCellForFromTO("(PORT/PLACE OF LOADING)", HELVETICA_FONT_SIZE_5);
+        PdfPCell fromSmaller = OpenPDFUtil.getPdfpCellForFromTO("(PORT/PLACE OF LOADING)", HELVETICA_SIZE_5);
         secondTable.addCell(fromSmaller);
 
 //  Third Row Paragraph
@@ -456,57 +458,57 @@ public class OpenPDFSample {
         PdfPCell toDate = OpenPDFUtil.getPdfpCellForFromTO("DATE:");
         thirdTable.addCell(toDate);
 
-        PdfPCell toDateValue = new PdfPCell (new Phrase("2024-09-24", FONT_SIZE_9));
+        PdfPCell toDateValue = new PdfPCell (new Phrase("2024-09-24", HELVETICA_SIZE_9));
         thirdTable.addCell(toDateValue);
 
 
 //        VOYAGE/FLIGHT #
-        PdfPCell voyageFlightNum = new PdfPCell (new Phrase("VOYAGE/FLIGHT #", FONT_SIZE_9));
+        PdfPCell voyageFlightNum = new PdfPCell (new Phrase("VOYAGE/FLIGHT #", HELVETICA_SIZE_9));
         thirdTable.addCell(voyageFlightNum);
 
 
-        PdfPCell voyageFlightNumValue = new PdfPCell (new Phrase("439W", FONT_SIZE_9));
+        PdfPCell voyageFlightNumValue = new PdfPCell (new Phrase("439W", HELVETICA_SIZE_9));
         thirdTable.addCell(voyageFlightNumValue);
 
 
 //        TRANSPORT MODE:
-        PdfPCell transPortMode = new PdfPCell ( new Phrase("VOYAGE/FLIGHT #", FONT_SIZE_9));
+        PdfPCell transPortMode = new PdfPCell ( new Phrase("VOYAGE/FLIGHT #", HELVETICA_SIZE_9));
         thirdTable.addCell(transPortMode);
 
-        PdfPCell transPortModeValue =  new PdfPCell( new Phrase("OCEAN", FONT_SIZE_9));
+        PdfPCell transPortModeValue =  new PdfPCell( new Phrase("OCEAN", HELVETICA_SIZE_9));
         thirdTable.addCell(transPortModeValue);
 
 //        NAMED PLACE:
-        PdfPCell namedPlace =  new PdfPCell( new Phrase("NAMED PLACE:", FONT_SIZE_9));
+        PdfPCell namedPlace =  new PdfPCell( new Phrase("NAMED PLACE:", HELVETICA_SIZE_9));
         thirdTable.addCell(namedPlace);
 
-        PdfPCell namedPlaceValue = new PdfPCell( new Phrase("YANTIAN", FONT_SIZE_9));
+        PdfPCell namedPlaceValue = new PdfPCell( new Phrase("YANTIAN", HELVETICA_SIZE_9));
         thirdTable.addCell(namedPlaceValue);
 
 //        COUNTRY OF LOADING:
-        PdfPCell lodingCountry = new PdfPCell( new Phrase("COUNTRY OF LOADING:", FONT_SIZE_9));
+        PdfPCell lodingCountry = new PdfPCell( new Phrase("COUNTRY OF LOADING:", HELVETICA_SIZE_9));
         thirdTable.addCell(lodingCountry);
 
-        PdfPCell lodingCountryValue = new PdfPCell( new Phrase("CN", FONT_SIZE_9));
+        PdfPCell lodingCountryValue = new PdfPCell( new Phrase("CN", HELVETICA_SIZE_9));
         thirdTable.addCell(lodingCountryValue);
 
 
 // COUNTRY OF ORIGIN:
-        PdfPCell originCountry = new PdfPCell( new Phrase("COUNTRY OF ORIGIN:", FONT_SIZE_9));
+        PdfPCell originCountry = new PdfPCell( new Phrase("COUNTRY OF ORIGIN:", HELVETICA_SIZE_9));
         thirdTable.addCell(originCountry);
 
-        PdfPCell originCountryValue = new PdfPCell( new Phrase("CN", FONT_SIZE_9));
+        PdfPCell originCountryValue = new PdfPCell( new Phrase("CN", HELVETICA_SIZE_9));
         thirdTable.addCell(originCountryValue);
 
 
 //        TO:
-        PdfPCell to = new PdfPCell( new Phrase("TO:", FONT_SIZE_9));
+        PdfPCell to = new PdfPCell( new Phrase("TO:", HELVETICA_SIZE_9));
         thirdTable.addCell(to);
 
-        PdfPCell toValue = new PdfPCell( new Phrase("CHARLESTON", FONT_SIZE_9));
+        PdfPCell toValue = new PdfPCell( new Phrase("CHARLESTON", HELVETICA_SIZE_9));
         thirdTable.addCell(toValue);
 
-        PdfPCell toSmaller = new PdfPCell( new Phrase("(FINAL DESTINATION IN THE PO)", FONT_SIZE_9));
+        PdfPCell toSmaller = new PdfPCell( new Phrase("(FINAL DESTINATION IN THE PO)", HELVETICA_SIZE_9));
         thirdTable.addCell(toSmaller);
 
         PdfPCell firstTableCell = new PdfPCell(firstRowParagraph);
