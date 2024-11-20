@@ -352,13 +352,20 @@ public class OpenPDFSample {
                                            .left(20f)
                                            .build();
 
-        Paragraph shipperParagraph = OpenPDFUtil.createParagraph("SHIPPER:" , HELVETICA_SIZE_8, null, margin);
-        Paragraph exporter =  OpenPDFUtil.createParagraph("EXPORTER:" , HELVETICA_SIZE_8, null, margin);
-        Paragraph otherInformation = OpenPDFUtil.createParagraph("OTHER INFORMATION:" , HELVETICA_SIZE_8, null, margin);
+        Paragraph shipperParagraph = OpenPDFUtil.createParagraph("SHIPPER:" , HELVETICA_SIZE_8,
+                null, null);
+        Paragraph exporter =  OpenPDFUtil.createParagraph("EXPORTER:" , HELVETICA_SIZE_8,
+                null, null);
+        Paragraph otherInformation = OpenPDFUtil.createParagraph("OTHER INFORMATION:" , HELVETICA_SIZE_8,
+                null, null);
+
+        Paragraph paragraph = new Paragraph("");
+        paragraph.setSpacingAfter(10f);
 
         document.add(shipperParagraph);
         document.add(exporter);
         document.add(otherInformation);
+        document.add(paragraph);
     }
 
 
